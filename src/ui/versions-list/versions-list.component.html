@@ -1,6 +1,18 @@
 <ng-container *ngFor="let version of versions$ | async">
-  <div class="version" [class.active]="currentVersionId === version.id" (click)="selectVersion(version.id)">
-    <div>{{ version.name }}</div>
-    <div>{{ version.type }}</div>
+  <div class="version-wrapper">
+    <input
+      [disabled]="version.type === versionTypes.IMAGE"
+      type="checkbox"
+      [ngModel]="isInPlaylist(version.id)"
+      (ngModelChange)="itemSelectionChanged($event, version)"
+    />
+    <div
+      class="version"
+      [class.active]="currentVersionId === version.id"
+      (click)="changeVersion(version.id)"
+    >
+      <div>{{ version.name }}</div>
+      <div>{{ version.type }}</div>
+    </div>
   </div>
 </ng-container>

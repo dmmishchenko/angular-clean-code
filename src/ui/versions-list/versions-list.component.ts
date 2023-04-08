@@ -1,22 +1,63 @@
 import { CommonModule } from "@angular/common";
-import { Component, EventEmitter, Input, Output, inject } from "@angular/core";
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnInit,
+  Output,
+  inject,
+} from "@angular/core";
 import { UniqueId } from "../../domain/unique-id";
 import { GetVersionsListUseCase } from "../../application/usecases/get-versions-list";
+import { FormsModule } from "@angular/forms";
+import { VERSION_TYPE } from "src/domain/version-type";
+import { Version } from "src/domain/version";
+import { GetStateUseCase } from "src/application/usecases/get-state";
+import { AddItemToPlaylist } from "src/application/usecases/add-item-to-playlist";
+import { RemoveItemFromPlaylist } from "src/application/usecases/remove-item-from-playlist";
 
 @Component({
   selector: "versions-list",
   templateUrl: "./versions-list.component.html",
   styleUrls: ["./versions-list.component.scss"],
-  imports: [CommonModule],
+  imports: [CommonModule, FormsModule],
   standalone: true,
 })
-export class VersionsListComponent {
+export class VersionsListComponent implements OnInit {
   @Output() versionChanged = new EventEmitter<number>();
   @Input() currentVersionId: number | null = null;
-
+  public readonly versionTypes = VERSION_TYPE;
   versions$ = inject(GetVersionsListUseCase).execute();
 
-  selectVersion(id: UniqueId): void {
+  private playlist: Version[] = [];
+
+  constructor(
+    private getState: GetStateUseCase,
+    private addItemToPlaylist: AddItemToPlaylist,
+    private removeItemFromPlaylist: RemoveItemFromPlaylist
+  ) {}
+
+  ngOnInit(): void {
+    this.getState
+      .execute()
+      .subscribe((state) => (this.playlist = state.playlist));
+  }
+
+  public changeVersion(id: UniqueId): void {
     this.versionChanged.emit(id);
+  }
+  public isInPlaylist(versionId: number): any {
+    return (
+      this.playlist.length > 1 &&
+      this.playlist.some((item) => item.id === versionId)
+    );
+  }
+
+  public itemSelectionChanged(selected: boolean, version: Version) {
+    if (selected) {
+      this.addItemToPlaylist.execute(version.id);
+    } else {
+      this.removeItemFromPlaylist.execute(version.id);
+    }
   }
 }
