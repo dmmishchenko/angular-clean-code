@@ -8,4 +8,8 @@ video {
   align-items: center;
   justify-content: center;
   height: 100%;
+  min-width: 300px;
+  max-width: 300px;
+  border: 1px solid;
+  margin: 0 15px;
 }

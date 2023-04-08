@@ -1,5 +1,5 @@
 <ng-container *ngFor="let version of versions$ | async">
-  <div class="version" (click)="selectVersion(version.id)">
+  <div class="version" [class.active]="currentVersionId === version.id" (click)="selectVersion(version.id)">
     <div>{{ version.name }}</div>
     <div>{{ version.type }}</div>
   </div>

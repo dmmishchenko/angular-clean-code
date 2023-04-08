@@ -1,15 +1,16 @@
-import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
-import { VersionMessage } from '../../domain/version-message';
+import { Injectable } from "@angular/core";
+import { Observable, of } from "rxjs";
+import { VersionMessage } from "../../domain/version-message";
+import { Usecase } from "../base/use-case";
+import { VersionsMockRepository } from "src/data/repositories/versions-mock.repository";
 
-@Injectable({ providedIn: 'root' })
-export class GetVersionMessagesUseCase {
-  execute(): Observable<VersionMessage[]> {
-    return of([
-      {
-        author: 'Dmitriy',
-        text: 'nice one',
-      },
-    ]);
+@Injectable({ providedIn: "root" })
+export class GetVersionMessagesUseCase
+  implements Usecase<Observable<VersionMessage[]>>
+{
+  constructor(private versionsRepository: VersionsMockRepository) {}
+
+  execute(id: number): Observable<VersionMessage[]> {
+    return this.versionsRepository.getVersionMessages(id);
   }
 }

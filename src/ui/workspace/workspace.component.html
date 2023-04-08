@@ -1,3 +1,12 @@
 <div class="workspace-wrapper">
-  <video controls src="{{ currentUrl }}"></video>
+  <ng-container *ngIf="version$ | async as version; else noData">
+    <video
+      *ngIf="version.type === versionTypes.VIDEO"
+      controls
+      src="{{ version.url }}"
+    ></video>
+    <img *ngIf="version.type === versionTypes.IMAGE" src="{{ version.url }}" />
+  </ng-container>
 </div>
+
+<ng-template #noData> No data source </ng-template>

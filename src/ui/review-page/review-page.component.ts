@@ -1,23 +1,32 @@
-import { Component, OnInit } from '@angular/core';
-import { HeaderMenuComponent } from '../header-menu/header-menu.component';
-import { RightPanelComponent } from '../right-panel/right-panel.component';
-import { VersionsListComponent } from '../versions-list/versions-list.component';
-import { WorkspaceComponent } from '../workspace/workspace.component';
+import { CommonModule } from "@angular/common";
+import { Component, inject } from "@angular/core";
+import { Observable } from "rxjs";
+import { ChangeVersionUseCase } from "src/application/usecases/change-version";
+import { GetStateUseCase } from "src/application/usecases/get-state";
+import { ReviewPageState } from "src/domain/review-page-state";
+import { HeaderMenuComponent } from "../header-menu/header-menu.component";
+import { RightPanelComponent } from "../right-panel/right-panel.component";
+import { VersionsListComponent } from "../versions-list/versions-list.component";
+import { WorkspaceComponent } from "../workspace/workspace.component";
 
 @Component({
-  selector: 'review-page',
-  templateUrl: './review-page.component.html',
-  styleUrls: ['./review-page.component.scss'],
+  selector: "review-page",
+  templateUrl: "./review-page.component.html",
+  styleUrls: ["./review-page.component.scss"],
   standalone: true,
   imports: [
+    CommonModule,
     VersionsListComponent,
     WorkspaceComponent,
     HeaderMenuComponent,
     RightPanelComponent,
   ],
 })
-export class ReviewPage implements OnInit {
-  constructor() {}
+export class ReviewPage {
+  state$: Observable<ReviewPageState> = inject(GetStateUseCase).execute();
+  constructor(private changeVersionUseCase: ChangeVersionUseCase) {}
 
-  ngOnInit() {}
+  processVersionChange(id: number) {
+    this.changeVersionUseCase.execute(id);
+  }
 }
