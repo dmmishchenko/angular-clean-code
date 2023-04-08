@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { UniqueId } from '../../domain/unique-id';
 import { GetVersionsListUseCase } from '../../application/usecases/get-versions-list';
+import { ChangeVersionUseCase } from '../../application/usecases/change-version';
 
 @Component({
   selector: 'versions-list',
@@ -15,6 +16,7 @@ export class VersionsListComponent {
   constructor() {}
 
   selectVersion(id: UniqueId): void {
-    console.log('VersionChanged:', id);
+    const res = ChangeVersionUseCase(id);
+    console.log(res);
   }
 }
