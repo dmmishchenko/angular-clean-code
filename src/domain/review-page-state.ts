@@ -1,3 +1,6 @@
+import { Version } from "./version";
+
 export interface ReviewPageState {
-  versionId: number | null;
+  activeVersionId: number | null;
+  playlist: Version[];
 }

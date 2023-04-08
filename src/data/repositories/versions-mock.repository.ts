@@ -10,7 +10,19 @@ const VERSIONS_TABLE = [
     id: 1,
     type: VERSION_TYPE.VIDEO,
     url: "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/Sintel.mp4",
-    name: "Blender Video",
+    name: "Blender Video Sintel",
+  },
+  {
+    id: 3,
+    type: VERSION_TYPE.VIDEO,
+    url: "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4",
+    name: "First Blender Moovie",
+  },
+  {
+    id: 4,
+    type: VERSION_TYPE.VIDEO,
+    url: "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/TearsOfSteel.mp4",
+    name: "Tears of Steel",
   },
   {
     id: 2,

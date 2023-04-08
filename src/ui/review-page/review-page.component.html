@@ -1,9 +1,11 @@
-<header-menu [activeVersionName]="activeVersion?.name"></header-menu>
+<header-menu></header-menu>
 <div class="main-wrapper">
   <versions-list
-    [currentVersionId]="(state$ | async)!.versionId"
+    [currentVersionId]="(state$ | async)!.activeVersionId"
     (versionChanged)="processVersionChange($event)"
   ></versions-list>
-  <workspace [activeVersion]="activeVersion"></workspace>
-  <right-panel [currentVersionId]="(state$ | async)!.versionId"></right-panel>
+  <workspace></workspace>
+  <right-panel
+    [currentVersionId]="(state$ | async)!.activeVersionId"
+  ></right-panel>
 </div>

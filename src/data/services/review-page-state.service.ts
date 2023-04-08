@@ -8,7 +8,10 @@ import { ReviewPageState } from "src/domain/review-page-state";
 
 @Injectable({ providedIn: "root" })
 export class ReviewPageStateService implements ReviewPageStateInterface {
-  private state$$ = new BehaviorSubject<ReviewPageState>({ versionId: null });
+  private state$$ = new BehaviorSubject<ReviewPageState>({
+    activeVersionId: null,
+    playlist: [],
+  });
   public state$: Observable<ReviewPageState> = this.state$$.asObservable();
 
   setState(changes: StateChanges): void {

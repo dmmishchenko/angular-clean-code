@@ -1,15 +1,13 @@
 <div class="workspace-wrapper">
-  <ng-container *ngIf="activeVersion; else noData">
-    <video
-      *ngIf="activeVersion.type === versionTypes.VIDEO"
-      controls
-      src="{{ activeVersion.url }}"
-    ></video>
-    <img
-      *ngIf="activeVersion.type === versionTypes.IMAGE"
-      src="{{ activeVersion.url }}"
-    />
+  <ng-container *ngIf="playlist$ | async as playlist">
+    <ng-container *ngIf="playlist.length; else noItems">
+      <ng-container
+        *ngFor="let version of playlist$ | async; trackBy: trackByFunc"
+      >
+        <media-asset [version]="version"></media-asset>
+      </ng-container>
+    </ng-container>
   </ng-container>
 </div>
 
-<ng-template #noData> No data source </ng-template>
+<ng-template #noItems> No items </ng-template>

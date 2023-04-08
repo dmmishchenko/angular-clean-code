@@ -25,12 +25,9 @@ import { Version } from "src/domain/version";
 })
 export class ReviewPage {
   state$: Observable<ReviewPageState> = inject(GetStateUseCase).execute();
-  public activeVersion: Version | null = null;
   constructor(private changeVersionUseCase: ChangeActiveVersionUseCase) {}
 
   processVersionChange(id: number) {
-    this.changeVersionUseCase.execute(id).subscribe((activeVersion) => {
-      this.activeVersion = activeVersion;
-    });
+    this.changeVersionUseCase.execute(id);
   }
 }

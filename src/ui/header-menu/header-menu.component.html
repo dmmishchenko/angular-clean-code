@@ -1,1 +1,1 @@
-<div>{{activeVersionName || 'No data'}}</div>
+<div>{{ (activeVersionName$ | async) || "No data" }}</div>
