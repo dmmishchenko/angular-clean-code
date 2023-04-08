@@ -1,0 +1,11 @@
+.version {
+  padding: 5px;
+  border: 1px solid;
+  margin: 5px 0;
+  min-width: 100px;
+  transition: linear 0.2s;
+  &:hover {
+    cursor: pointer;
+    opacity: 0.7;
+  }
+}
