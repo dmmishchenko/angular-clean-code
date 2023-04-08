@@ -1,8 +1,8 @@
 import { Injectable } from "@angular/core";
-import { Observable, of } from "rxjs";
+import { Observable } from "rxjs";
+import { VersionsMockRepository } from "src/data/repositories/versions-mock.repository";
 import { VersionMessage } from "../../domain/version-message";
 import { Usecase } from "../base/use-case";
-import { VersionsMockRepository } from "src/data/repositories/versions-mock.repository";
 
 @Injectable({ providedIn: "root" })
 export class GetVersionMessagesUseCase

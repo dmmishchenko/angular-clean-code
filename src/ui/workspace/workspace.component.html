@@ -1,11 +1,14 @@
 <div class="workspace-wrapper">
-  <ng-container *ngIf="version$ | async as version; else noData">
+  <ng-container *ngIf="activeVersion; else noData">
     <video
-      *ngIf="version.type === versionTypes.VIDEO"
+      *ngIf="activeVersion.type === versionTypes.VIDEO"
       controls
-      src="{{ version.url }}"
+      src="{{ activeVersion.url }}"
     ></video>
-    <img *ngIf="version.type === versionTypes.IMAGE" src="{{ version.url }}" />
+    <img
+      *ngIf="activeVersion.type === versionTypes.IMAGE"
+      src="{{ activeVersion.url }}"
+    />
   </ng-container>
 </div>
 
