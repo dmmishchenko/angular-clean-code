@@ -1,4 +1,4 @@
-<ng-container *ngFor="let version of versions$ | async">
+<ng-container *ngFor="let version of versions$ | async; trackBy: trackByFunc">
   <div class="version-wrapper">
     <input
       [disabled]="version.type === versionTypes.IMAGE"

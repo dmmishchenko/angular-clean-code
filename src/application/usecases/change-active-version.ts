@@ -1,17 +1,11 @@
 import { Injectable } from "@angular/core";
 import { Usecase } from "../base/use-case";
 import { ReviewPageStateService } from "src/data/services/review-page-state.service";
-import { GetVersionDetailUseCase } from "./get-version-detail";
 
 @Injectable({ providedIn: "root" })
 export class ChangeActiveVersionUseCase implements Usecase {
-  constructor(
-    private reviewPageState: ReviewPageStateService,
-    private getVersion: GetVersionDetailUseCase
-  ) {}
+  constructor(private reviewPageState: ReviewPageStateService) {}
   execute(versionId: number): void {
-    this.getVersion.execute(versionId).subscribe((activeVersion) => {
-      this.reviewPageState.setState({ activeVersionId: versionId, playlist: [activeVersion] });
-    });
+    this.reviewPageState.setState({ activeVersionId: versionId });
   }
 }

@@ -9,3 +9,6 @@
     [currentVersionId]="(state$ | async)!.activeVersionId"
   ></right-panel>
 </div>
+<video-menu
+  (changeActiveVideo)="processActiveVersionChange($event)"
+></video-menu>

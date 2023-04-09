@@ -40,24 +40,32 @@ export class VersionsListComponent implements OnInit {
   ngOnInit(): void {
     this.getState
       .execute()
-      .subscribe((state) => (this.playlist = state.playlist));
+      .subscribe((state) => {
+        this.playlist = state.playlist
+      });
   }
 
+  // one approach when we emit event to page and page decides what to do next
   public changeVersion(id: UniqueId): void {
     this.versionChanged.emit(id);
   }
-  public isInPlaylist(versionId: number): any {
+  public isInPlaylist(versionId: number): boolean {
     return (
       this.playlist.length > 1 &&
       this.playlist.some((item) => item.id === versionId)
     );
   }
 
+  // another approach when we call usecase from child component and not from page component
   public itemSelectionChanged(selected: boolean, version: Version) {
     if (selected) {
       this.addItemToPlaylist.execute(version.id);
     } else {
       this.removeItemFromPlaylist.execute(version.id);
     }
+  }
+
+  public trackByFunc(_: number, item: Version) {
+    return item.id;
   }
 }
