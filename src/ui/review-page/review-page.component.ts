@@ -27,6 +27,7 @@ import { ChangeActiveVersionUseCase } from "src/application/usecases/change-acti
 })
 export class ReviewPage {
   state$: Observable<ReviewPageState> = inject(GetStateUseCase).execute();
+
   constructor(
     private changeVersionUseCase: ChangeVersionUseCase,
     private changeActiveVersionUseCase: ChangeActiveVersionUseCase
