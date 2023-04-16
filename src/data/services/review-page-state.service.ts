@@ -1,10 +1,11 @@
-import { Injectable } from "@angular/core";
-import { BehaviorSubject, Observable } from "rxjs";
+import { Injectable, NgZone } from "@angular/core";
+import { BehaviorSubject, Observable, OperatorFunction } from "rxjs";
 import {
   ReviewPageStateInterface,
   StateChanges,
 } from "src/application/services/review-page-state.interface";
 import { ReviewPageState } from "src/domain/review-page-state";
+import { SyncService } from "./sync.service";
 
 @Injectable({ providedIn: "root" })
 export class ReviewPageStateService implements ReviewPageStateInterface {
@@ -12,12 +13,41 @@ export class ReviewPageStateService implements ReviewPageStateInterface {
     activeVersionId: null,
     playlist: [],
   });
-  public state$: Observable<ReviewPageState> = this.state$$.asObservable();
+  public state$: Observable<ReviewPageState> = this.state$$
+    .asObservable()
+    .pipe(runInZone(this.ngZone));
 
-  setState(changes: StateChanges): void {
+  constructor(private syncService: SyncService, private ngZone: NgZone) {}
+
+  public setState(changes: StateChanges): void {
+    const currentState = this.state$$.getValue();
+    const newState = Object.assign(currentState, changes);
+
+    this.state$$.next(newState);
+    if (this.syncService.isInSync) {
+      this.syncService.postChange(changes);
+    }
+  }
+
+  public assignSyncState(changes: StateChanges): void {
     const currentState = this.state$$.getValue();
     const newState = Object.assign(currentState, changes);
 
     this.state$$.next(newState);
   }
+}
+
+/**
+ * Custom OperatorFunction that makes sure that all lifecycle hooks of an Observable
+ * are run in the NgZone.
+ */
+function runInZone<T>(zone: NgZone): OperatorFunction<T, T> {
+  return (source) => {
+    return new Observable((observer) => {
+      const onNext = (value: T) => zone.run(() => observer.next(value));
+      const onError = (e: any) => zone.run(() => observer.error(e));
+      const onComplete = () => zone.run(() => observer.complete());
+      return source.subscribe(onNext, onError, onComplete);
+    });
+  };
 }

@@ -8,4 +8,5 @@ export type StateChanges = {
 export interface ReviewPageStateInterface {
   state$: Observable<ReviewPageState>;
   setState(changes: StateChanges): void;
+  assignSyncState(changes: StateChanges): void;
 }

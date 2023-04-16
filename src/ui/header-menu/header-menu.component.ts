@@ -1,7 +1,9 @@
 import { CommonModule } from "@angular/common";
-import { Component, inject } from "@angular/core";
+import { Component, OnDestroy, inject } from "@angular/core";
 import { map } from "rxjs";
 import { GetStateUseCase } from "src/application/usecases/get-state";
+import { JoinSessionUseCase } from "src/application/usecases/join-session";
+import { LeaveSessionUseCase } from "src/application/usecases/leave-session";
 
 @Component({
   selector: "header-menu",
@@ -10,7 +12,7 @@ import { GetStateUseCase } from "src/application/usecases/get-state";
   standalone: true,
   imports: [CommonModule],
 })
-export class HeaderMenuComponent {
+export class HeaderMenuComponent implements OnDestroy {
   public readonly activeVersionName$ = inject(GetStateUseCase)
     .execute()
     .pipe(
@@ -26,4 +28,28 @@ export class HeaderMenuComponent {
         return null;
       })
     );
+  public isInSync: boolean = false;
+
+  constructor(
+    private joinSessionUseCase: JoinSessionUseCase,
+    private leadeSessionUseCase: LeaveSessionUseCase
+  ) {}
+
+  public joinSync() {
+    try {
+      this.joinSessionUseCase.execute();
+      this.isInSync = true;
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  public leaveSync() {
+    this.leadeSessionUseCase.execute();
+    this.isInSync = false;
+  }
+
+  ngOnDestroy(): void {
+    this.leaveSync();
+  }
 }
