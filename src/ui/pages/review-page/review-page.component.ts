@@ -4,12 +4,12 @@ import { Observable } from "rxjs";
 import { ChangeVersionUseCase } from "src/application/usecases/change-version";
 import { GetStateUseCase } from "src/application/usecases/get-state";
 import { ReviewPageState } from "src/domain/review-page-state";
-import { HeaderMenuComponent } from "../header-menu/header-menu.component";
-import { RightPanelComponent } from "../right-panel/right-panel.component";
-import { VersionsListComponent } from "../versions-list/versions-list.component";
-import { WorkspaceComponent } from "../workspace/workspace.component";
-import { VideoMenuComponent } from "../video-menu/video-menu.component";
+import { HeaderMenuComponent } from "../../components/header-menu/header-menu.component";
+import { RightPanelComponent } from "../../components/right-panel/right-panel.component";
 import { ChangeActiveVersionUseCase } from "src/application/usecases/change-active-version";
+import { VersionsListComponent } from "src/ui/components/versions-list/versions-list.component";
+import { VideoMenuComponent } from "src/ui/components/video-menu/video-menu.component";
+import { WorkspaceComponent } from "src/ui/components/workspace/workspace.component";
 
 @Component({
   selector: "review-page",

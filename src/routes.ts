@@ -1,5 +1,5 @@
 import { Route } from '@angular/router';
-import { ReviewPage } from './ui/review-page/review-page.component';
+import { ReviewPage } from './ui/pages/review-page/review-page.component';
 
 export const routes: Route[] = [
   {
