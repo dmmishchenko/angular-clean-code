@@ -1,9 +1,10 @@
 import { CommonModule } from "@angular/common";
 import { Component, OnDestroy, inject } from "@angular/core";
+import { GetStateUseCase } from "@usecases/get-state";
+import { JoinSessionUseCase } from "@usecases/sync-session/join-session";
+import { LeaveSessionUseCase } from "@usecases/sync-session/leave-session";
 import { map } from "rxjs";
-import { GetStateUseCase } from "src/application/usecases/get-state";
-import { JoinSessionUseCase } from "src/application/usecases/join-session";
-import { LeaveSessionUseCase } from "src/application/usecases/leave-session";
+
 
 @Component({
   selector: "header-menu",
@@ -33,7 +34,7 @@ export class HeaderMenuComponent implements OnDestroy {
   constructor(
     private joinSessionUseCase: JoinSessionUseCase,
     private leadeSessionUseCase: LeaveSessionUseCase
-  ) {}
+  ) { }
 
   public joinSync() {
     try {

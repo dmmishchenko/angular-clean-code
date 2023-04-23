@@ -1,20 +1,17 @@
 import { CommonModule } from "@angular/common";
 import {
-  Component,
-  EventEmitter,
-  Input,
-  OnInit,
-  Output,
-  inject,
+  Component, inject, Input,
+  OnInit
 } from "@angular/core";
 import { FormsModule } from "@angular/forms";
-import { VERSION_TYPE } from "src/domain/version-type";
-import { Version } from "src/domain/version";
-import { GetStateUseCase } from "src/application/usecases/get-state";
-import { AddItemToPlaylist } from "src/application/usecases/add-item-to-playlist";
-import { RemoveItemFromPlaylist } from "src/application/usecases/remove-item-from-playlist";
-import { GetVersionsListUseCase } from "src/application/usecases/get-versions-list";
-import { UniqueId } from "src/domain/unique-id";
+import { UniqueId } from "@domain/unique-id";
+import { Version } from "@domain/version";
+import { VERSION_TYPE } from "@domain/version-type";
+import { GetStateUseCase } from "@usecases/get-state";
+import { AddItemToPlaylistUseCase } from "@usecases/versions-list/add-item-to-playlist";
+import { ChangeVersionUseCase } from "@usecases/versions-list/change-version";
+import { GetVersionsListUseCase } from "@usecases/versions-list/get-versions-list";
+import { RemoveItemFromPlaylistUseCase } from "@usecases/versions-list/remove-item-from-playlist";
 
 @Component({
   selector: "versions-list",
@@ -24,7 +21,6 @@ import { UniqueId } from "src/domain/unique-id";
   standalone: true,
 })
 export class VersionsListComponent implements OnInit {
-  @Output() versionChanged = new EventEmitter<number>();
   @Input() currentVersionId: number | null = null;
   public readonly versionTypes = VERSION_TYPE;
   versions$ = inject(GetVersionsListUseCase).execute();
@@ -33,9 +29,10 @@ export class VersionsListComponent implements OnInit {
 
   constructor(
     private getState: GetStateUseCase,
-    private addItemToPlaylist: AddItemToPlaylist,
-    private removeItemFromPlaylist: RemoveItemFromPlaylist
-  ) {}
+    private addItemToPlaylist: AddItemToPlaylistUseCase,
+    private removeItemFromPlaylist: RemoveItemFromPlaylistUseCase,
+    private changeVersionUseCase: ChangeVersionUseCase,
+  ) { }
 
   ngOnInit(): void {
     this.getState
@@ -47,8 +44,9 @@ export class VersionsListComponent implements OnInit {
 
   // one approach when we emit event to page and page decides what to do next
   public changeVersion(id: UniqueId): void {
-    this.versionChanged.emit(id);
+    this.changeVersionUseCase.execute(id);
   }
+
   public isInPlaylist(versionId: number): boolean {
     return (
       this.playlist.length > 1 &&

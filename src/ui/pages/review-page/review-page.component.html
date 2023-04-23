@@ -1,14 +1,7 @@
 <header-menu></header-menu>
 <div class="main-wrapper">
-  <versions-list
-    [currentVersionId]="(state$ | async)!.activeVersionId"
-    (versionChanged)="processVersionChange($event)"
-  ></versions-list>
+  <versions-list [currentVersionId]="(state$ | async)!.activeVersionId"></versions-list>
   <workspace></workspace>
-  <right-panel
-    [currentVersionId]="(state$ | async)!.activeVersionId"
-  ></right-panel>
+  <right-panel [currentVersionId]="(state$ | async)!.activeVersionId"></right-panel>
 </div>
-<video-menu
-  (changeActiveVideo)="processActiveVersionChange($event)"
-></video-menu>
+<video-menu></video-menu>

@@ -1,8 +1,8 @@
 import { CommonModule } from "@angular/common";
 import { Component, inject } from "@angular/core";
+import { Version } from "@domain/version";
+import { GetStateUseCase } from "@usecases/get-state";
 import { map } from "rxjs";
-import { GetStateUseCase } from "src/application/usecases/get-state";
-import { Version } from "src/domain/version";
 import { MediaAssetComponent } from "../media-asset/media-asset.component";
 
 @Component({

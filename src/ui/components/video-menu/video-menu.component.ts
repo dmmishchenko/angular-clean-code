@@ -1,9 +1,10 @@
-import { Component, EventEmitter, Output, inject } from "@angular/core";
 import { CommonModule } from "@angular/common";
+import { Component, inject } from "@angular/core";
+import { Version } from "@domain/version";
+import { VERSION_TYPE } from "@domain/version-type";
+import { ChangeActiveVersionUseCase } from "@usecases/change-active-version";
+import { GetStateUseCase } from "@usecases/get-state";
 import { map } from "rxjs";
-import { GetStateUseCase } from "src/application/usecases/get-state";
-import { Version } from "src/domain/version";
-import { VERSION_TYPE } from "src/domain/version-type";
 
 @Component({
   selector: "video-menu",
@@ -13,10 +14,11 @@ import { VERSION_TYPE } from "src/domain/version-type";
   styleUrls: ["./video-menu.component.scss"],
 })
 export class VideoMenuComponent {
-  @Output() changeActiveVideo = new EventEmitter<number>();
   public playlist$ = inject(GetStateUseCase)
     .execute()
     .pipe(map((state) => state.playlist));
+
+  constructor(private changeActiveVersionUseCase: ChangeActiveVersionUseCase) { }
 
   public trackByFunc(_: number, item: Version) {
     return item.id;
@@ -29,6 +31,6 @@ export class VideoMenuComponent {
     );
   }
   public changeVideo(versionId: number) {
-    this.changeActiveVideo.emit(versionId);
+    this.changeActiveVersionUseCase.execute(versionId);
   }
 }
