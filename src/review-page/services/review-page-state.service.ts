@@ -1,9 +1,13 @@
 import { Injectable, NgZone } from "@angular/core";
-import { ReviewPageStateInterface, StateChanges } from "@application/services/review-page-state.interface";
+import {
+  ReviewPageStateInterface,
+  StateChanges,
+} from "@application/services/review-page-state.interface";
 import { ReviewPageState } from "src/review-page/models/review-page-state";
 import { BehaviorSubject, Observable, OperatorFunction } from "rxjs";
 import { SyncService } from "./sync.service";
-
+import { ActivatedRoute, Router } from "@angular/router";
+import { VERSION_ID } from "src/environments/consts";
 
 @Injectable()
 export class ReviewPageStateService implements ReviewPageStateInterface {
@@ -15,14 +19,26 @@ export class ReviewPageStateService implements ReviewPageStateInterface {
     .asObservable()
     .pipe(runInZone(this.ngZone));
 
-  constructor(private syncService: SyncService, private ngZone: NgZone) { }
+  constructor(
+    private syncService: SyncService,
+    private ngZone: NgZone,
+    private router: Router,
+    private activatedRoute: ActivatedRoute
+  ) {}
 
   public setState(changes: StateChanges): void {
     const currentState = this.state$$.getValue();
     const newState = Object.assign(currentState, changes);
 
     this.state$$.next(newState);
-    // здесь будет шина
+    if (changes.activeVersionId !== undefined) {
+      this.router.navigate([], {
+        relativeTo: this.activatedRoute,
+        queryParams: {
+          [VERSION_ID]: changes.activeVersionId,
+        },
+      });
+    }
     if (this.syncService.isInSync) {
       this.syncService.postChange(changes);
     }
