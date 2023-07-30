@@ -1,16 +1,14 @@
-import { CommonModule } from "@angular/common";
 import { Component, Input, inject } from "@angular/core";
+import { map } from "rxjs";
 import { Version } from "src/review-page/models/version";
 import { VERSION_TYPE } from "src/review-page/models/version-type";
 import { GetStateUseCase } from "src/review-page/usecases/get-state";
-import { map } from "rxjs";
+import { MediaAssetsService } from "../../services/media-assets.service";
 
 @Component({
   selector: "media-asset",
   templateUrl: "./media-asset.component.html",
   styleUrls: ["./media-asset.component.scss"],
-  standalone: true,
-  imports: [CommonModule],
 })
 export class MediaAssetComponent {
   @Input() version: Version | null = null;
@@ -26,4 +24,17 @@ export class MediaAssetComponent {
     );
 
   public readonly versionTypes = VERSION_TYPE;
+
+  constructor(private mediaAssetsService: MediaAssetsService) {}
+
+  onLoadedMetadata(event: Event) {
+    const video = event.target as HTMLVideoElement;
+    if (video) {
+      this.mediaAssetsService.setAsset(video)
+    }
+  }
+
+  onAssetLoad() {
+    // empty for now
+  }
 }

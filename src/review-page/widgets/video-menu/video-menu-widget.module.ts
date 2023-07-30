@@ -4,8 +4,8 @@ import { VideoMenuComponent } from "./video-menu.component";
 import { ChangeActiveVersionUseCase } from "./usecases/change-active-version";
 
 @NgModule({
-  declarations: [],
-  imports: [CommonModule, VideoMenuComponent],
+  declarations: [VideoMenuComponent],
+  imports: [CommonModule],
   exports: [VideoMenuComponent],
   providers: [ChangeActiveVersionUseCase],
 })

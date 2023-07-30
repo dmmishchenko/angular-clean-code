@@ -1,9 +1,12 @@
 <div class="video-menu-wrapper">
-  <ng-container *ngIf="playlist$ | async as playlist">
-    <ng-container *ngIf="showSlider(playlist)">
-      <ng-container *ngFor="let version of playlist">
-        <div class="slider" (click)="changeVideo(version.id)">
-          <div class="slider-cursor"></div>
+  <ng-container *ngIf="videoPlaylist$ | async as versions">
+    <ng-container *ngIf="versions.length">
+      <ng-container *ngFor="let version of versions">
+        <div class="slider" [class.loading]="true" [id]="version.id" (click)="changeVideo(version.id)">
+          <div
+            class="slider-cursor"
+            *ngIf="version.id === currentVersionId"
+          ></div>
         </div>
       </ng-container>
     </ng-container>

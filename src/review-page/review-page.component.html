@@ -1,7 +1,11 @@
 <header-menu></header-menu>
 <div class="main-wrapper">
-  <versions-list [currentVersionId]="(state$ | async)!.activeVersionId"></versions-list>
+  <versions-list
+    [currentVersionId]="(state$ | async)!.activeVersionId"
+  ></versions-list>
   <workspace></workspace>
-  <right-panel [currentVersionId]="(state$ | async)!.activeVersionId"></right-panel>
+  <right-panel
+    [currentVersionId]="(state$ | async)!.activeVersionId"
+  ></right-panel>
 </div>
-<video-menu></video-menu>
+<video-menu [currentVersionId]="(state$ | async)!.activeVersionId"></video-menu>

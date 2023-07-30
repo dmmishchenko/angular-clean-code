@@ -12,4 +12,15 @@
   width: 100%;
   cursor: pointer;
   position: relative;
+  &.loading {
+    cursor: not-allowed;
+    opacity: 0.3;
+  }
+}
+
+.slider-cursor {
+  height: 100%;
+  background-color: red;
+  width: 1px;
+  transform: translateX(0);
 }

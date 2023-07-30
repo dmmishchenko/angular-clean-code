@@ -1,9 +1,13 @@
 <div class="media-wrapper" [class.active]="isActive$ | async">
   <ng-container *ngIf="version">
     <video
+      preload="auto"
+      (loadedmetadata)="onLoadedMetadata($event)"
+      (loadeddata)="onAssetLoad()"
       *ngIf="version.type === versionTypes.VIDEO"
       controls
       src="{{ version.url }}"
+      id="videoAsset"
     ></video>
     <img *ngIf="version.type === versionTypes.IMAGE" src="{{ version.url }}" />
   </ng-container>
