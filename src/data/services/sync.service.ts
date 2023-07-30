@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
-import { SYNC_SESSION_CHANNEL_NAME } from "src/application/base/consts";
-import { StateChanges } from "src/application/services/review-page-state.interface";
-import { SyncServiceInterface } from "src/application/services/sync-service.interface";
+import { SYNC_SESSION_CHANNEL_NAME } from "@application/base/consts";
+import { StateChanges } from "@application/services/review-page-state.interface";
+import { SyncServiceInterface } from "@application/services/sync-service.interface";
 
 @Injectable({ providedIn: "root" })
 export class SyncService implements SyncServiceInterface {

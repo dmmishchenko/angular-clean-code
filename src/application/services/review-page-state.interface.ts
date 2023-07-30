@@ -1,5 +1,5 @@
+import { ReviewPageState } from "@domain/review-page-state";
 import { Observable } from "rxjs";
-import { ReviewPageState } from "src/domain/review-page-state";
 
 export type StateChanges = {
   [key in keyof ReviewPageState]?: ReviewPageState[key];

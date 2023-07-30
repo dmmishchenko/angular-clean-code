@@ -1,9 +1,9 @@
 import { CommonModule } from "@angular/common";
 import { Component, Input, inject } from "@angular/core";
+import { Version } from "@domain/version";
+import { VERSION_TYPE } from "@domain/version-type";
+import { GetStateUseCase } from "@usecases/get-state";
 import { map } from "rxjs";
-import { GetStateUseCase } from "src/application/usecases/get-state";
-import { Version } from "src/domain/version";
-import { VERSION_TYPE } from "src/domain/version-type";
 
 @Component({
   selector: "media-asset",

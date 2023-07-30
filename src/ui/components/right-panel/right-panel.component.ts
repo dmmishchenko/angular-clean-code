@@ -1,8 +1,9 @@
 import { CommonModule } from "@angular/common";
 import { Component, Input } from "@angular/core";
+import { VersionMessage } from "@domain/version-message";
+import { GetVersionMessagesUseCase } from "@usecases/get-version-messages";
 import { Observable } from "rxjs";
-import { GetVersionMessagesUseCase } from "src/application/usecases/get-version-messages";
-import { VersionMessage } from "src/domain/version-message";
+
 
 @Component({
   selector: "right-panel",
@@ -27,5 +28,5 @@ export class RightPanelComponent {
   }
   public messages$: Observable<VersionMessage[]> | null = null;
 
-  constructor(private getVersionMessagesUseCase: GetVersionMessagesUseCase) {}
+  constructor(private getVersionMessagesUseCase: GetVersionMessagesUseCase) { }
 }

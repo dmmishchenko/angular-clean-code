@@ -1,11 +1,9 @@
 import { Injectable, NgZone } from "@angular/core";
+import { ReviewPageStateInterface, StateChanges } from "@application/services/review-page-state.interface";
+import { ReviewPageState } from "@domain/review-page-state";
 import { BehaviorSubject, Observable, OperatorFunction } from "rxjs";
-import {
-  ReviewPageStateInterface,
-  StateChanges,
-} from "src/application/services/review-page-state.interface";
-import { ReviewPageState } from "src/domain/review-page-state";
 import { SyncService } from "./sync.service";
+
 
 @Injectable({ providedIn: "root" })
 export class ReviewPageStateService implements ReviewPageStateInterface {
@@ -17,7 +15,7 @@ export class ReviewPageStateService implements ReviewPageStateInterface {
     .asObservable()
     .pipe(runInZone(this.ngZone));
 
-  constructor(private syncService: SyncService, private ngZone: NgZone) {}
+  constructor(private syncService: SyncService, private ngZone: NgZone) { }
 
   public setState(changes: StateChanges): void {
     const currentState = this.state$$.getValue();

@@ -1,22 +1,22 @@
 import { Injectable } from "@angular/core";
+import { Usecase } from "@application/base/use-case";
+import { StateChanges } from "@application/services/review-page-state.interface";
+import { VersionsMockRepository } from "@data/repositories/versions-mock.repository";
+import { ReviewPageStateService } from "@data/services/review-page-state.service";
+import { ReviewPageState } from "@domain/review-page-state";
+import { Version } from "@domain/version";
+import { VERSION_TYPE } from "@domain/version-type";
 import { take, withLatestFrom } from "rxjs";
-import { ReviewPageStateService } from "src/data/services/review-page-state.service";
-import { Usecase } from "../base/use-case";
-import { GetVersionDetailUseCase } from "./get-version-detail";
-import { VERSION_TYPE } from "src/domain/version-type";
-import { StateChanges } from "../services/review-page-state.interface";
-import { ReviewPageState } from "src/domain/review-page-state";
-import { Version } from "src/domain/version";
 
 @Injectable({ providedIn: "root" })
-export class AddItemToPlaylist implements Usecase {
+export class AddItemToPlaylistUseCase implements Usecase {
   constructor(
     private reviewPageState: ReviewPageStateService,
-    private getVersion: GetVersionDetailUseCase
-  ) {}
+    private versionsRepository: VersionsMockRepository
+  ) { }
   execute(versionId: number): void {
-    this.getVersion
-      .execute(versionId)
+
+    this.versionsRepository.getVersionDetail(versionId)
       .pipe(withLatestFrom(this.reviewPageState.state$), take(1))
       .subscribe(([version, currentState]) => {
         const changes = this.getChanges(currentState, version);
