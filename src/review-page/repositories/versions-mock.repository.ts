@@ -11,24 +11,31 @@ const VERSIONS_TABLE = [
     type: VERSION_TYPE.VIDEO,
     url: "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/Sintel.mp4",
     name: "Blender Video Sintel",
+    thumbnail:
+      "https://storage.googleapis.com/gtv-videos-bucket/sample/images/Sintel.jpg",
   },
   {
     id: 3,
     type: VERSION_TYPE.VIDEO,
     url: "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4",
     name: "First Blender Moovie",
+    thumbnail:
+      "https://storage.googleapis.com/gtv-videos-bucket/sample/images/ElephantsDream.jpg",
   },
   {
     id: 4,
     type: VERSION_TYPE.VIDEO,
     url: "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/TearsOfSteel.mp4",
     name: "Tears of Steel",
+    thumbnail:
+      "https://storage.googleapis.com/gtv-videos-bucket/sample/images/TearsOfSteel.jpg",
   },
   {
     id: 2,
     type: VERSION_TYPE.IMAGE,
     url: "https://picsum.photos/300/200",
     name: "Random Image",
+    thumbnail: "assets/default_thumbnail.png",
   },
 ] as Version[];
 @Injectable({ providedIn: "root" })
@@ -57,9 +64,10 @@ export class VersionsMockRepository implements VersionsRepository {
   }
 }
 
-function makeid(length:number) {
-  let result = '';
-  const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+function makeid(length: number) {
+  let result = "";
+  const characters =
+    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
   const charactersLength = characters.length;
   let counter = 0;
   while (counter < length) {

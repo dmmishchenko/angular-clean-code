@@ -366,4 +366,6 @@
    * - 21: White on black or black on white.
    */
   // "terminal.integrated.minimumContrastRatio": 4.5
+  "scss.lint.unknownProperties": "ignore",
+  "scss.lint.unknownAtRules": "ignore"
 }
