@@ -3,11 +3,11 @@ import {
   ReviewPageStateInterface,
   StateChanges,
 } from "@application/services/review-page-state.interface";
-import { ReviewPageState } from "src/review-page/models/review-page-state";
 import { BehaviorSubject, Observable, OperatorFunction } from "rxjs";
-import { SyncService } from "./sync.service";
-import { ActivatedRoute, Router } from "@angular/router";
 import { VERSION_ID } from "src/environments/consts";
+import { ReviewPageState } from "src/review-page/models/review-page-state";
+import { RouteQueryStateService } from "./route-query-state.service";
+import { SyncService } from "./sync.service";
 
 @Injectable()
 export class ReviewPageStateService implements ReviewPageStateInterface {
@@ -22,8 +22,7 @@ export class ReviewPageStateService implements ReviewPageStateInterface {
   constructor(
     private syncService: SyncService,
     private ngZone: NgZone,
-    private router: Router,
-    private activatedRoute: ActivatedRoute
+    private routeQueryStateService: RouteQueryStateService
   ) {}
 
   public setState(changes: StateChanges): void {
@@ -32,11 +31,8 @@ export class ReviewPageStateService implements ReviewPageStateInterface {
 
     this.state$$.next(newState);
     if (changes.activeVersionId !== undefined) {
-      this.router.navigate([], {
-        relativeTo: this.activatedRoute,
-        queryParams: {
-          [VERSION_ID]: changes.activeVersionId,
-        },
+      this.routeQueryStateService.changeState({
+        [VERSION_ID]: changes.activeVersionId,
       });
     }
     if (this.syncService.isInSync) {

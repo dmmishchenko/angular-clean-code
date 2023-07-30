@@ -10,6 +10,7 @@ import { VideoMenuWidgetModule } from "./widgets/video-menu/video-menu-widget.mo
 import { WorkspaceWidgetModule } from "./widgets/workspace/workspace-widget.module";
 import { SyncService } from "./services/sync.service";
 import { GetStateUseCase } from "./usecases/get-state";
+import { RouteQueryStateService } from "./services/route-query-state.service";
 
 @NgModule({
   imports: [
@@ -22,6 +23,11 @@ import { GetStateUseCase } from "./usecases/get-state";
     VideoMenuWidgetModule,
   ],
   declarations: [ReviewPage],
-  providers: [ReviewPageStateService, SyncService, GetStateUseCase],
+  providers: [
+    ReviewPageStateService,
+    SyncService,
+    RouteQueryStateService,
+    GetStateUseCase,
+  ],
 })
 export class ReviewPageModule {}
