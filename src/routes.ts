@@ -1,24 +1,26 @@
-import { Route } from '@angular/router';
-import { ReviewPage } from './ui/pages/review-page/review-page.component';
+import { Route } from "@angular/router";
 
 export const routes: Route[] = [
   {
-    path: '',
+    path: "",
     children: [
       {
-        path: 'review',
-        component: ReviewPage,
+        path: "review",
+        loadChildren: () =>
+          import("./review-page/review-page.module").then(
+            (m) => m.ReviewPageModule
+          ),
       },
       {
-        path: '',
-        redirectTo: 'review',
-        pathMatch: 'full',
+        path: "",
+        redirectTo: "review",
+        pathMatch: "full",
       },
     ],
   },
   {
-    path: '**',
-    pathMatch: 'full',
-    redirectTo: 'review',
+    path: "**",
+    pathMatch: "full",
+    redirectTo: "review",
   },
 ];
