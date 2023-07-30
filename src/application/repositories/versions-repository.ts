@@ -4,7 +4,7 @@ import { Version } from "src/review-page/models/version";
 import { VersionMessage } from "src/review-page/models/version-message";
 
 export interface VersionsRepository {
-  getVersionsList(): Observable<Version[]>;
+  getVersionsList(id?: number): Observable<Version[]>;
   getVersionDetail(id: number): Observable<Version>;
   getVersionMessages(id: number): Observable<VersionMessage[]>;
 }

@@ -5,7 +5,7 @@ export type QueryStateChanges = {
 };
 
 export interface QueryState {
-  [VERSION_ID]: number | null;
+  [VERSION_ID]: number | null | string;
 }
 
 export interface RouteQueryStateInterface {

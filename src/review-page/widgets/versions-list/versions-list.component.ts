@@ -1,17 +1,17 @@
 import { CommonModule } from "@angular/common";
-import {
-  Component, inject, Input,
-  OnInit
-} from "@angular/core";
+import { Component, Input, OnDestroy, OnInit } from "@angular/core";
 import { FormsModule } from "@angular/forms";
+import { EMPTY, Observable, Subject, take, takeUntil, tap } from "rxjs";
+import { VERSION_ID } from "src/environments/consts";
 import { UniqueId } from "src/review-page/models/unique-id";
 import { Version } from "src/review-page/models/version";
 import { VERSION_TYPE } from "src/review-page/models/version-type";
+import { RouteQueryStateService } from "src/review-page/services/route-query-state.service";
 import { GetStateUseCase } from "src/review-page/usecases/get-state";
+import { AddItemToPlaylistUseCase } from "./usecases/add-item-to-playlist";
 import { ChangeVersionUseCase } from "./usecases/change-version";
 import { GetVersionsListUseCase } from "./usecases/get-versions-list";
 import { RemoveItemFromPlaylistUseCase } from "./usecases/remove-item-from-playlist";
-import { AddItemToPlaylistUseCase } from "./usecases/add-item-to-playlist";
 
 @Component({
   selector: "versions-list",
@@ -20,29 +20,49 @@ import { AddItemToPlaylistUseCase } from "./usecases/add-item-to-playlist";
   imports: [CommonModule, FormsModule],
   standalone: true,
 })
-export class VersionsListComponent implements OnInit {
+export class VersionsListComponent implements OnInit, OnDestroy {
   @Input() currentVersionId: number | null = null;
   public readonly versionTypes = VERSION_TYPE;
-  versions$ = inject(GetVersionsListUseCase).execute();
+  public versions$: Observable<never> | Observable<Version[]> = EMPTY;
 
   private playlist: Version[] = [];
+  private destroyed$ = new Subject<void>();
 
   constructor(
     private getState: GetStateUseCase,
     private addItemToPlaylist: AddItemToPlaylistUseCase,
     private removeItemFromPlaylist: RemoveItemFromPlaylistUseCase,
     private changeVersionUseCase: ChangeVersionUseCase,
-  ) { }
+    private routeQueryStateService: RouteQueryStateService,
+    private getVersionsListUseCase: GetVersionsListUseCase
+  ) {}
 
   ngOnInit(): void {
+    this.routeQueryStateService
+      .getState()
+      .pipe(take(1))
+      .subscribe((queryState) => {
+        const versionId = queryState.get(VERSION_ID);
+        if (versionId) {
+          //load and set as active
+          this.versions$ = this.getVersionsListUseCase.execute(+versionId).pipe(
+            tap(() => {
+              this.changeVersion(+versionId);
+            })
+          );
+        } else {
+          this.versions$ = this.getVersionsListUseCase.execute();
+        }
+      });
+
     this.getState
       .execute()
+      .pipe(takeUntil(this.destroyed$))
       .subscribe((state) => {
-        this.playlist = state.playlist
+        this.playlist = state.playlist;
       });
   }
 
-  // one approach when we emit event to page and page decides what to do next
   public changeVersion(id: UniqueId): void {
     this.changeVersionUseCase.execute(id);
   }
@@ -54,7 +74,6 @@ export class VersionsListComponent implements OnInit {
     );
   }
 
-  // another approach when we call usecase from child component and not from page component
   public itemSelectionChanged(selected: boolean, version: Version) {
     if (selected) {
       this.addItemToPlaylist.execute(version.id);
@@ -65,5 +84,10 @@ export class VersionsListComponent implements OnInit {
 
   public trackByFunc(_: number, item: Version) {
     return item.id;
+  }
+
+  ngOnDestroy(): void {
+    this.destroyed$.next();
+    this.destroyed$.complete();
   }
 }

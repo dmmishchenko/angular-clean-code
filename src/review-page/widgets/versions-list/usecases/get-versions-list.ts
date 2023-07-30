@@ -7,7 +7,12 @@ import { VersionsMockRepository } from "src/review-page/repositories/versions-mo
 @Injectable()
 export class GetVersionsListUseCase implements Usecase<Observable<Version[]>> {
   constructor(private versionsRepository: VersionsMockRepository) {}
-  execute(): Observable<Version[]> {
-    return this.versionsRepository.getVersionsList();
+  /**
+   * execute versions load from repository
+   * @param versionId - this field is used to simulate pagination load
+   * @returns
+   */
+  execute(versionId?: number): Observable<Version[]> {
+    return this.versionsRepository.getVersionsList(versionId);
   }
 }

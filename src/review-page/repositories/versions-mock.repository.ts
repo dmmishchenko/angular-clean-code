@@ -1,9 +1,10 @@
+import { Injectable } from "@angular/core";
+import { Observable, delay, of, throwError } from "rxjs";
+import { VersionMessage } from "src/review-page/models/version-message";
+import { VersionsRepository } from "../../application/repositories/versions-repository";
+import { ItemNotFoundError } from "../errors/item-not-found";
 import { Version } from "../models/version";
 import { VERSION_TYPE } from "../models/version-type";
-import { Observable, of } from "rxjs";
-import { Injectable } from "@angular/core";
-import { VersionsRepository } from "../../application/repositories/versions-repository";
-import { VersionMessage } from "src/review-page/models/version-message";
 
 const VERSIONS_TABLE = [
   {
@@ -56,11 +57,25 @@ export class VersionsMockRepository implements VersionsRepository {
       },
     ]);
   }
-  getVersionsList(): Observable<Version[]> {
-    return of(VERSIONS_TABLE);
+  /**
+   * execute versions load from repository
+   * @param id - this field is used to simulate pagination load
+   * @returns
+   */
+  getVersionsList(id?: number): Observable<Version[]> {
+    return of(VERSIONS_TABLE).pipe(delay(100));
   }
   getVersionDetail(id: number): Observable<Version> {
-    return of(VERSIONS_TABLE.find((x) => x.id === id)!);
+    const itemInDb = VERSIONS_TABLE.find((x) => x.id === id);
+    if (itemInDb) {
+      return of(itemInDb).pipe(delay(100));
+    }
+    return throwError(() => {
+      const error = new ItemNotFoundError(
+        `Item with version id :${id} doesn't exist`
+      );
+      return error;
+    });
   }
 }
 
