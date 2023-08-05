@@ -39,7 +39,7 @@ const VERSIONS_TABLE = [
     thumbnail: "assets/default_thumbnail.png",
   },
 ] as Version[];
-@Injectable({ providedIn: "root" })
+@Injectable()
 export class VersionsMockRepository implements VersionsRepository {
   getVersionMessages(id: number): Observable<VersionMessage[]> {
     return of([

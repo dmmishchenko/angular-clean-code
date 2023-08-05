@@ -1,4 +1,4 @@
-import { Injectable, NgZone } from "@angular/core";
+import { Inject, Injectable, NgZone } from "@angular/core";
 import {
   ReviewPageStateInterface,
   StateChanges,
@@ -8,6 +8,7 @@ import { VERSION_ID } from "src/environments/consts";
 import { ReviewPageState } from "src/review-page/models/review-page-state";
 import { RouteQueryStateService } from "./route-query-state.service";
 import { SyncService } from "./sync.service";
+import { SYNC_SERVICE, ROUTE_QUERY_STATE_SERVICE } from "@application/tokens";
 
 @Injectable()
 export class ReviewPageStateService implements ReviewPageStateInterface {
@@ -20,9 +21,10 @@ export class ReviewPageStateService implements ReviewPageStateInterface {
     .pipe(runInZone(this.ngZone));
 
   constructor(
-    private syncService: SyncService,
-    private ngZone: NgZone,
-    private routeQueryStateService: RouteQueryStateService
+    @Inject(SYNC_SERVICE) private syncService: SyncService,
+    @Inject(ROUTE_QUERY_STATE_SERVICE)
+    private routeQueryStateService: RouteQueryStateService,
+    private ngZone: NgZone
   ) {}
 
   public setState(changes: StateChanges): void {

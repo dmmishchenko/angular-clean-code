@@ -1,7 +1,7 @@
 import { Component, inject } from "@angular/core";
-import { ReviewPageState } from "src/review-page/models/review-page-state";
-import { GetStateUseCase } from "src/review-page/usecases/get-state";
+import { GET_STATE_USE_CASE } from "@application/tokens";
 import { Observable } from "rxjs";
+import { ReviewPageState } from "src/review-page/models/review-page-state";
 
 @Component({
   selector: "review-page",
@@ -9,7 +9,7 @@ import { Observable } from "rxjs";
   styleUrls: ["./review-page.component.scss"],
 })
 export class ReviewPage {
-  state$: Observable<ReviewPageState> = inject(GetStateUseCase).execute();
+  state$: Observable<ReviewPageState> = inject(GET_STATE_USE_CASE).execute();
 }
 
 

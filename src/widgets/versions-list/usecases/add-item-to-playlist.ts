@@ -1,18 +1,20 @@
-import { Injectable } from "@angular/core";
+import { Inject, Injectable } from "@angular/core";
 import { Usecase } from "@application/base/use-case";
+import { VersionsRepository } from "@application/repositories/versions-repository";
 import { StateChanges } from "@application/services/review-page-state.interface";
+import { PAGE_STATE_SERVICE, VERSIONS_REPOSITORY } from "@application/tokens";
 import { take, withLatestFrom } from "rxjs";
 import { ReviewPageState } from "src/review-page/models/review-page-state";
 import { Version } from "src/review-page/models/version";
 import { VERSION_TYPE } from "src/review-page/models/version-type";
-import { VersionsMockRepository } from "src/review-page/repositories/versions-mock.repository";
 import { ReviewPageStateService } from "src/review-page/services/review-page-state.service";
 
 @Injectable()
 export class AddItemToPlaylistUseCase implements Usecase {
   constructor(
+    @Inject(PAGE_STATE_SERVICE)
     private reviewPageState: ReviewPageStateService,
-    private versionsRepository: VersionsMockRepository
+    @Inject(VERSIONS_REPOSITORY) private versionsRepository: VersionsRepository
   ) {}
   execute(versionId: number): void {
     this.versionsRepository

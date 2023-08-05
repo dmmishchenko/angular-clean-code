@@ -1,7 +1,7 @@
 import { CommonModule } from "@angular/common";
 import { Component, OnDestroy, inject } from "@angular/core";
 import { GetStateUseCase } from "src/review-page/usecases/get-state";
-import { JoinSessionUseCase } from "src/review-page/widgets/header/usecases/join-session";
+import { JoinSessionUseCase } from "src/widgets/header/usecases/join-session";
 import { map } from "rxjs";
 import { LeaveSessionUseCase } from "./usecases/leave-session";
 

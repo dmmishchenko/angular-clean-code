@@ -1,5 +1,5 @@
 import { CommonModule } from "@angular/common";
-import { Component, Input, OnDestroy, OnInit } from "@angular/core";
+import { Component, Inject, Input, OnDestroy, OnInit } from "@angular/core";
 import { FormsModule } from "@angular/forms";
 import { EMPTY, Observable, Subject, take, takeUntil, tap } from "rxjs";
 import { VERSION_ID } from "src/environments/consts";
@@ -12,6 +12,8 @@ import { AddItemToPlaylistUseCase } from "./usecases/add-item-to-playlist";
 import { ChangeVersionUseCase } from "./usecases/change-version";
 import { GetVersionsListUseCase } from "./usecases/get-versions-list";
 import { RemoveItemFromPlaylistUseCase } from "./usecases/remove-item-from-playlist";
+import { GET_STATE_USE_CASE, ROUTE_QUERY_STATE_SERVICE } from "@application/tokens";
+
 
 @Component({
   selector: "versions-list",
@@ -29,11 +31,13 @@ export class VersionsListComponent implements OnInit, OnDestroy {
   private destroyed$ = new Subject<void>();
 
   constructor(
+    @Inject(GET_STATE_USE_CASE)
     private getState: GetStateUseCase,
+    @Inject(ROUTE_QUERY_STATE_SERVICE)
+    private routeQueryStateService: RouteQueryStateService,
     private addItemToPlaylist: AddItemToPlaylistUseCase,
     private removeItemFromPlaylist: RemoveItemFromPlaylistUseCase,
     private changeVersionUseCase: ChangeVersionUseCase,
-    private routeQueryStateService: RouteQueryStateService,
     private getVersionsListUseCase: GetVersionsListUseCase
   ) {}
 

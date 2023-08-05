@@ -1,12 +1,16 @@
-import { Injectable } from "@angular/core";
+import { Inject, Injectable } from "@angular/core";
 import { Usecase } from "@application/base/use-case";
 import { StateChanges } from "@application/services/review-page-state.interface";
+import { PAGE_STATE_SERVICE } from "@application/tokens";
 import { take } from "rxjs";
 import { ReviewPageStateService } from "src/review-page/services/review-page-state.service";
 
 @Injectable()
 export class RemoveItemFromPlaylistUseCase implements Usecase {
-  constructor(private reviewPageState: ReviewPageStateService) {}
+  constructor(
+    @Inject(PAGE_STATE_SERVICE)
+    private reviewPageState: ReviewPageStateService
+  ) {}
   execute(removedId: number): void {
     this.reviewPageState.state$.pipe(take(1)).subscribe((currentState) => {
       const newPlaylist = currentState.playlist.filter(

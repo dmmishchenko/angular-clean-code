@@ -1,12 +1,15 @@
-import { Injectable } from "@angular/core";
+import { Inject, Injectable } from "@angular/core";
 import { Usecase } from "@application/base/use-case";
+import { VersionsRepository } from "@application/repositories/versions-repository";
+import { VERSIONS_REPOSITORY } from "@application/tokens";
 import { Version } from "@models/version";
 import { Observable } from "rxjs";
-import { VersionsMockRepository } from "src/review-page/repositories/versions-mock.repository";
 
 @Injectable()
 export class GetVersionsListUseCase implements Usecase<Observable<Version[]>> {
-  constructor(private versionsRepository: VersionsMockRepository) {}
+  constructor(
+    @Inject(VERSIONS_REPOSITORY) private versionsRepository: VersionsRepository
+  ) {}
   /**
    * execute versions load from repository
    * @param versionId - this field is used to simulate pagination load
