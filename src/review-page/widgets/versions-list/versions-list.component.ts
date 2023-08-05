@@ -39,10 +39,9 @@ export class VersionsListComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.routeQueryStateService
-      .getState()
+      .getVersionIdFromRoute()
       .pipe(take(1))
-      .subscribe((queryState) => {
-        const versionId = queryState.get(VERSION_ID);
+      .subscribe((versionId) => {
         if (versionId) {
           //load and set as active
           this.versions$ = this.getVersionsListUseCase.execute(+versionId).pipe(

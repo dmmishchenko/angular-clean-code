@@ -6,6 +6,7 @@ import {
 } from "@application/services/route-query-state.service";
 import { Observable, map } from "rxjs";
 import { ReviewQueryStateDecorator } from "./review-query-state.decorator";
+import { VERSION_ID } from "src/environments/consts";
 
 @Injectable()
 export class RouteQueryStateService implements RouteQueryStateInterface {
@@ -24,5 +25,14 @@ export class RouteQueryStateService implements RouteQueryStateInterface {
         return new ReviewQueryStateDecorator(paramPam);
       })
     );
+  }
+
+  public getVersionIdFromRoute() {
+    const versionId$ = this.activatedRoute.queryParamMap.pipe(
+      map((paramPam) => {
+        return new ReviewQueryStateDecorator(paramPam).get(VERSION_ID);
+      })
+    );
+    return versionId$;
   }
 }
