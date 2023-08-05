@@ -4,8 +4,8 @@ import {
 } from "@application/tokens";
 import { map } from "rxjs";
 import { MediaAssetsService } from "../../services/media-assets.service";
-import { Version } from "@application/models/version";
-import { VERSION_TYPE } from "@application/models/version-type";
+import { AssetVersion } from "@application/models/asset-version";
+import { ASSET_VERSION_TYPE } from "@application/models/asset-version-type";
 
 @Component({
   selector: "media-asset",
@@ -13,7 +13,7 @@ import { VERSION_TYPE } from "@application/models/version-type";
   styleUrls: ["./media-asset.component.scss"],
 })
 export class MediaAssetComponent {
-  @Input() version: Version | null = null;
+  @Input() version: AssetVersion | null = null;
   isActive$ = inject(PAGE_STATE_SERVICE_TOKEN).state$.pipe(
     map((state) => {
       if (state.activeVersionId) {
@@ -23,7 +23,7 @@ export class MediaAssetComponent {
     })
   );
 
-  public readonly versionTypes = VERSION_TYPE;
+  public readonly versionTypes = ASSET_VERSION_TYPE;
 
   constructor(private mediaAssetsService: MediaAssetsService) {}
 

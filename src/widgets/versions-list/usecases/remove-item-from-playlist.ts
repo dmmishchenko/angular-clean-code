@@ -1,9 +1,9 @@
 import { Inject, Injectable } from "@angular/core";
 import { Usecase } from "@application/base/use-case";
 import {
-  ReviewPageStateInterface,
+  PageStateInterface,
   StateChanges,
-} from "@application/services/review-page-state.interface";
+} from "@application/services/page-state.interface";
 import { PAGE_STATE_SERVICE_TOKEN } from "@application/tokens";
 import { take } from "rxjs";
 
@@ -11,7 +11,7 @@ import { take } from "rxjs";
 export class RemoveItemFromPlaylistUseCase implements Usecase {
   constructor(
     @Inject(PAGE_STATE_SERVICE_TOKEN)
-    private reviewPageState: ReviewPageStateInterface
+    private reviewPageState: PageStateInterface
   ) {}
   execute(removedId: number): void {
     this.reviewPageState.state$.pipe(take(1)).subscribe((currentState) => {

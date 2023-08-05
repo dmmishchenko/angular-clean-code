@@ -1,7 +1,7 @@
 import { Component, inject } from "@angular/core";
 import { PAGE_STATE_SERVICE_TOKEN } from "@application/tokens";
 import { Observable } from "rxjs";
-import { ReviewPageState } from "@models/review-page-state";
+import { PageState } from "@application/models/page-state";
 
 @Component({
   selector: "review-page",
@@ -9,7 +9,7 @@ import { ReviewPageState } from "@models/review-page-state";
   styleUrls: ["./review-page.component.scss"],
 })
 export class ReviewPage {
-  state$: Observable<ReviewPageState> = inject(PAGE_STATE_SERVICE_TOKEN).state$;
+  state$: Observable<PageState> = inject(PAGE_STATE_SERVICE_TOKEN).state$;
 }
 
 

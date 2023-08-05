@@ -1,11 +1,11 @@
 import { Observable } from "rxjs";
 import { InjectionToken } from "@angular/core";
-import { Version } from "@application/models/version";
+import { AssetVersion } from "@application/models/asset-version";
 import { VersionMessage } from "@application/models/version-message";
 
 export interface VersionsRepository {
-  getVersionsList(id?: number): Observable<Version[]>;
-  getVersionDetail(id: number): Observable<Version>;
+  getVersionsList(id?: number): Observable<AssetVersion[]>;
+  getVersionDetail(id: number): Observable<AssetVersion>;
   getVersionMessages(id: number): Observable<VersionMessage[]>;
 }
 

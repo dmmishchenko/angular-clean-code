@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core";
 import { SYNC_SESSION_CHANNEL_NAME } from "src/environments/consts";
-import { StateChanges } from "@application/services/review-page-state.interface";
+import { StateChanges } from "@application/services/page-state.interface";
 import { SyncServiceInterface } from "@application/services/sync-service.interface";
 
 @Injectable()

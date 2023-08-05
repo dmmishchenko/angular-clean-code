@@ -3,7 +3,7 @@ import {
   PAGE_STATE_SERVICE_TOKEN
 } from "@application/tokens";
 import { map } from "rxjs";
-import { Version } from "@application/models/version";
+import { AssetVersion } from "@application/models/asset-version";
 
 @Component({
   selector: "workspace",
@@ -15,7 +15,7 @@ export class WorkspaceComponent {
     map((state) => state.playlist)
   );
 
-  public trackByFunc(_: number, item: Version) {
+  public trackByFunc(_: number, item: AssetVersion) {
     return item.id;
   }
 }

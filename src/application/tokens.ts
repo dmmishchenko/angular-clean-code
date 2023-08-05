@@ -1,10 +1,10 @@
 import { InjectionToken } from "@angular/core";
 import { VersionsRepository } from "./repositories/versions-repository";
-import { ReviewPageStateInterface } from "./services/review-page-state.interface";
+import { PageStateInterface } from "./services/page-state.interface";
 import { RouteQueryStateInterface } from "./services/route-query-state.service";
 import { SyncServiceInterface } from "./services/sync-service.interface";
 
-export const PAGE_STATE_SERVICE_TOKEN = new InjectionToken<ReviewPageStateInterface>(
+export const PAGE_STATE_SERVICE_TOKEN = new InjectionToken<PageStateInterface>(
   "ReviewPageStateInterface"
 );
 

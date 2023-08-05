@@ -1,4 +1,4 @@
-import { StateChanges } from "./review-page-state.interface";
+import { StateChanges } from "./page-state.interface";
 
 export interface SyncServiceInterface {
   isInSync: boolean;

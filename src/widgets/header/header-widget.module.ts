@@ -8,11 +8,11 @@ import {
 import { HeaderMenuComponent } from "./header-menu.component";
 import { JoinSessionUseCase } from "./usecases/join-session";
 import { LeaveSessionUseCase } from "./usecases/leave-session";
-import { ReviewPageStateInterface } from "@application/services/review-page-state.interface";
+import { PageStateInterface } from "@application/services/page-state.interface";
 
 export interface HeaderWidgetConfig {
   SYNC_SERVICE: InjectionToken<SyncServiceInterface>;
-  PAGE_STATE_SERVICE: InjectionToken<ReviewPageStateInterface>;
+  PAGE_STATE_SERVICE: InjectionToken<PageStateInterface>;
 }
 
 @NgModule({

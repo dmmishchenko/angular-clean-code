@@ -2,20 +2,20 @@ import { Inject, Injectable } from "@angular/core";
 import { Usecase } from "@application/base/use-case";
 import { VersionsRepository } from "@application/repositories/versions-repository";
 import {
-  ReviewPageStateInterface,
+  PageStateInterface,
   StateChanges,
-} from "@application/services/review-page-state.interface";
+} from "@application/services/page-state.interface";
 import { PAGE_STATE_SERVICE_TOKEN, VERSIONS_REPOSITORY_TOKEN } from "@application/tokens";
 import { take, withLatestFrom } from "rxjs";
-import { ReviewPageState } from "@models/review-page-state";
-import { Version } from "@application/models/version";
-import { VERSION_TYPE } from "@application/models/version-type";
+import { PageState } from "@application/models/page-state";
+import { AssetVersion } from "@application/models/asset-version";
+import { ASSET_VERSION_TYPE } from "@application/models/asset-version-type";
 
 @Injectable()
 export class AddItemToPlaylistUseCase implements Usecase {
   constructor(
     @Inject(PAGE_STATE_SERVICE_TOKEN)
-    private reviewPageState: ReviewPageStateInterface,
+    private reviewPageState: PageStateInterface,
     @Inject(VERSIONS_REPOSITORY_TOKEN) private versionsRepository: VersionsRepository
   ) {}
   execute(versionId: number): void {
@@ -30,14 +30,14 @@ export class AddItemToPlaylistUseCase implements Usecase {
   }
 
   private getChanges(
-    currentState: ReviewPageState,
-    version: Version
+    currentState: PageState,
+    version: AssetVersion
   ): StateChanges {
     let changes: StateChanges = {};
     const currentPlaylist = currentState.playlist;
     if (
       currentPlaylist.length === 1 &&
-      currentPlaylist[0].type === VERSION_TYPE.IMAGE
+      currentPlaylist[0].type === ASSET_VERSION_TYPE.IMAGE
     ) {
       changes = {
         activeVersionId: version.id,

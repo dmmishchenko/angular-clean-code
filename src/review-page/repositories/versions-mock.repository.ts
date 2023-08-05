@@ -3,13 +3,13 @@ import { Observable, delay, of, throwError } from "rxjs";
 import { VersionMessage } from "@application/models/version-message";
 import { VersionsRepository } from "../../application/repositories/versions-repository";
 import { ItemNotFoundError } from "../errors/item-not-found";
-import { VERSION_TYPE } from "@application/models/version-type";
-import { Version } from "@application/models/version";
+import { ASSET_VERSION_TYPE } from "@application/models/asset-version-type";
+import { AssetVersion } from "@application/models/asset-version";
 
 const VERSIONS_TABLE = [
   {
     id: 1,
-    type: VERSION_TYPE.VIDEO,
+    type: ASSET_VERSION_TYPE.VIDEO,
     url: "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/Sintel.mp4",
     name: "Blender Video Sintel",
     thumbnail:
@@ -17,7 +17,7 @@ const VERSIONS_TABLE = [
   },
   {
     id: 3,
-    type: VERSION_TYPE.VIDEO,
+    type: ASSET_VERSION_TYPE.VIDEO,
     url: "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4",
     name: "First Blender Moovie",
     thumbnail:
@@ -25,7 +25,7 @@ const VERSIONS_TABLE = [
   },
   {
     id: 4,
-    type: VERSION_TYPE.VIDEO,
+    type: ASSET_VERSION_TYPE.VIDEO,
     url: "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/TearsOfSteel.mp4",
     name: "Tears of Steel",
     thumbnail:
@@ -33,12 +33,12 @@ const VERSIONS_TABLE = [
   },
   {
     id: 2,
-    type: VERSION_TYPE.IMAGE,
+    type: ASSET_VERSION_TYPE.IMAGE,
     url: "https://picsum.photos/300/200",
     name: "Random Image",
     thumbnail: "assets/default_thumbnail.png",
   },
-] as Version[];
+] as AssetVersion[];
 @Injectable()
 export class VersionsMockRepository implements VersionsRepository {
   getVersionMessages(id: number): Observable<VersionMessage[]> {
@@ -62,10 +62,10 @@ export class VersionsMockRepository implements VersionsRepository {
    * @param id - this field is used to simulate pagination load
    * @returns
    */
-  getVersionsList(id?: number): Observable<Version[]> {
+  getVersionsList(id?: number): Observable<AssetVersion[]> {
     return of(VERSIONS_TABLE).pipe(delay(100));
   }
-  getVersionDetail(id: number): Observable<Version> {
+  getVersionDetail(id: number): Observable<AssetVersion> {
     const itemInDb = VERSIONS_TABLE.find((x) => x.id === id);
     if (itemInDb) {
       return of(itemInDb).pipe(delay(100));

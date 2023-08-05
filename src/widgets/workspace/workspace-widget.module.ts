@@ -1,6 +1,6 @@
 import { CommonModule } from "@angular/common";
 import { InjectionToken, ModuleWithProviders, NgModule } from "@angular/core";
-import { ReviewPageStateInterface } from "@application/services/review-page-state.interface";
+import { PageStateInterface } from "@application/services/page-state.interface";
 import { PAGE_STATE_SERVICE_TOKEN } from "@application/tokens";
 import { MediaAssetComponent } from "./components/media-asset/media-asset.component";
 import { MediaAssetsService } from "./services/media-assets.service";
@@ -8,7 +8,7 @@ import { WorkspaceFacadeService } from "./services/workspace-facade.service";
 import { WorkspaceComponent } from "./workspace.component";
 
 export interface WorkspaceWidgetConfig {
-  PAGE_STATE_SERVICE: InjectionToken<ReviewPageStateInterface>;
+  PAGE_STATE_SERVICE: InjectionToken<PageStateInterface>;
 }
 @NgModule({
   imports: [CommonModule],

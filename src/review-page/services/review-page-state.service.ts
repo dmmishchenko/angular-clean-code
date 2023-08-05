@@ -1,27 +1,31 @@
 import { Inject, Injectable, NgZone } from "@angular/core";
 import {
-  ReviewPageStateInterface,
+  PageStateInterface,
   StateChanges,
-} from "@application/services/review-page-state.interface";
+} from "@application/services/page-state.interface";
 import { RouteQueryStateInterface } from "@application/services/route-query-state.service";
 import { SyncServiceInterface } from "@application/services/sync-service.interface";
-import { ROUTE_QUERY_STATE_SERVICE_TOKEN, SYNC_SERVICE_TOKEN } from "@application/tokens";
+import {
+  ROUTE_QUERY_STATE_SERVICE_TOKEN,
+  SYNC_SERVICE_TOKEN,
+} from "@application/tokens";
 import { BehaviorSubject, Observable, OperatorFunction } from "rxjs";
 import { VERSION_ID } from "src/environments/consts";
-import { ReviewPageState } from "@models/review-page-state";
+import { PageState } from "@application/models/page-state";
 
 @Injectable()
-export class ReviewPageStateService implements ReviewPageStateInterface {
-  private state$$ = new BehaviorSubject<ReviewPageState>({
+export class ReviewPageStateService implements PageStateInterface {
+  private state$$ = new BehaviorSubject<PageState>({
     activeVersionId: null,
     playlist: [],
   });
-  public state$: Observable<ReviewPageState> = this.state$$
+  public state$: Observable<PageState> = this.state$$
     .asObservable()
     .pipe(runInZone(this.ngZone));
 
   constructor(
-    @Inject(SYNC_SERVICE_TOKEN) private syncService: SyncServiceInterface,
+    @Inject(SYNC_SERVICE_TOKEN)
+    private syncService: SyncServiceInterface,
     @Inject(ROUTE_QUERY_STATE_SERVICE_TOKEN)
     private routeQueryStateService: RouteQueryStateInterface,
     private ngZone: NgZone

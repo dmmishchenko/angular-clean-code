@@ -2,10 +2,10 @@ import { InjectionToken, ModuleWithProviders, NgModule } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { VideoMenuComponent } from "./video-menu.component";
 import { ChangeActiveVersionUseCase } from "./usecases/change-active-version";
-import { ReviewPageStateInterface } from "@application/services/review-page-state.interface";
+import { PageStateInterface } from "@application/services/page-state.interface";
 import { PAGE_STATE_SERVICE_TOKEN } from "@application/tokens";
 export interface VideoMenuWidgetConfig {
-  PAGE_STATE_SERVICE: InjectionToken<ReviewPageStateInterface>;
+  PAGE_STATE_SERVICE: InjectionToken<PageStateInterface>;
 }
 @NgModule({
   declarations: [VideoMenuComponent],
