@@ -1,11 +1,11 @@
 import { CommonModule } from "@angular/common";
 import { NgModule } from "@angular/core";
 import {
-  GET_STATE_USE_CASE,
-  PAGE_STATE_SERVICE,
-  ROUTE_QUERY_STATE_SERVICE,
-  SYNC_SERVICE,
-  VERSIONS_REPOSITORY,
+  GET_STATE_USE_CASE_TOKEN,
+  PAGE_STATE_SERVICE_TOKEN,
+  ROUTE_QUERY_STATE_SERVICE_TOKEN,
+  SYNC_SERVICE_TOKEN,
+  VERSIONS_REPOSITORY_TOKEN,
 } from "@application/tokens";
 import {
   HeaderWidgetConfig,
@@ -36,29 +36,29 @@ import { SyncService } from "./services/sync.service";
 import { GetStateUseCase } from "./usecases/get-state";
 
 const VersionsListWidgetConfig: VersionsListModuleConfig = {
-  PAGE_STATE_SERVICE,
-  SYNC_SERVICE,
-  ROUTE_QUERY_STATE_SERVICE,
-  GET_STATE_USE_CASE,
-  VERSIONS_REPOSITORY,
+  PAGE_STATE_SERVICE: PAGE_STATE_SERVICE_TOKEN,
+  SYNC_SERVICE: SYNC_SERVICE_TOKEN,
+  ROUTE_QUERY_STATE_SERVICE: ROUTE_QUERY_STATE_SERVICE_TOKEN,
+  GET_STATE_USE_CASE: GET_STATE_USE_CASE_TOKEN,
+  VERSIONS_REPOSITORY: VERSIONS_REPOSITORY_TOKEN,
 };
 
 const HeaderWidgetConfig: HeaderWidgetConfig = {
-  SYNC_SERVICE,
-  GET_STATE_USE_CASE,
+  SYNC_SERVICE: SYNC_SERVICE_TOKEN,
+  GET_STATE_USE_CASE: GET_STATE_USE_CASE_TOKEN,
 };
 
 const RightPanelWidgetConfig: RightPanelWidgetConfig = {
-  VERSIONS_REPOSITORY,
+  VERSIONS_REPOSITORY: VERSIONS_REPOSITORY_TOKEN,
 };
 
 const WorkspaceWidgetConfig: WorkspaceWidgetConfig = {
-  GET_STATE_USE_CASE,
+  GET_STATE_USE_CASE: GET_STATE_USE_CASE_TOKEN,
 };
 
 const VideoMenuWidgetConfig: VideoMenuWidgetConfig = {
-  GET_STATE_USE_CASE,
-  PAGE_STATE_SERVICE,
+  GET_STATE_USE_CASE: GET_STATE_USE_CASE_TOKEN,
+  PAGE_STATE_SERVICE: PAGE_STATE_SERVICE_TOKEN,
 };
 
 @NgModule({
@@ -73,11 +73,11 @@ const VideoMenuWidgetConfig: VideoMenuWidgetConfig = {
   ],
   declarations: [ReviewPage],
   providers: [
-    { provide: PAGE_STATE_SERVICE, useClass: ReviewPageStateService },
-    { provide: SYNC_SERVICE, useClass: SyncService },
-    { provide: ROUTE_QUERY_STATE_SERVICE, useClass: RouteQueryStateService },
-    { provide: GET_STATE_USE_CASE, useClass: GetStateUseCase },
-    { provide: VERSIONS_REPOSITORY, useClass: VersionsMockRepository },
+    { provide: PAGE_STATE_SERVICE_TOKEN, useClass: ReviewPageStateService },
+    { provide: SYNC_SERVICE_TOKEN, useClass: SyncService },
+    { provide: ROUTE_QUERY_STATE_SERVICE_TOKEN, useClass: RouteQueryStateService },
+    { provide: GET_STATE_USE_CASE_TOKEN, useClass: GetStateUseCase },
+    { provide: VERSIONS_REPOSITORY_TOKEN, useClass: VersionsMockRepository },
   ],
 })
 export class ReviewPageModule {}

@@ -4,9 +4,9 @@ import { VersionsRepository } from "@application/repositories/versions-repositor
 import { ReviewPageStateInterface } from "@application/services/review-page-state.interface";
 import { RouteQueryStateInterface } from "@application/services/route-query-state.service";
 import {
-  PAGE_STATE_SERVICE,
-  ROUTE_QUERY_STATE_SERVICE,
-  VERSIONS_REPOSITORY,
+  PAGE_STATE_SERVICE_TOKEN,
+  ROUTE_QUERY_STATE_SERVICE_TOKEN,
+  VERSIONS_REPOSITORY_TOKEN,
 } from "@application/tokens";
 import { VERSION_ID } from "src/environments/consts";
 import { ItemNotFoundError } from "src/review-page/errors/item-not-found";
@@ -14,10 +14,10 @@ import { ItemNotFoundError } from "src/review-page/errors/item-not-found";
 @Injectable()
 export class ChangeVersionUseCase implements Usecase {
   constructor(
-    @Inject(PAGE_STATE_SERVICE)
+    @Inject(PAGE_STATE_SERVICE_TOKEN)
     private reviewPageState: ReviewPageStateInterface,
-    @Inject(VERSIONS_REPOSITORY) private versionsRepository: VersionsRepository,
-    @Inject(ROUTE_QUERY_STATE_SERVICE)
+    @Inject(VERSIONS_REPOSITORY_TOKEN) private versionsRepository: VersionsRepository,
+    @Inject(ROUTE_QUERY_STATE_SERVICE_TOKEN)
     private routeQueryStateService: RouteQueryStateInterface
   ) {}
   execute(versionId: number): void {

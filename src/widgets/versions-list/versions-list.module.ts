@@ -10,11 +10,11 @@ import { SyncServiceInterface } from "@application/services/sync-service.interfa
 import { RouteQueryStateInterface } from "@application/services/route-query-state.service";
 import { GetStateUseCase } from "src/review-page/usecases/get-state";
 import {
-  GET_STATE_USE_CASE,
-  PAGE_STATE_SERVICE,
-  ROUTE_QUERY_STATE_SERVICE,
-  SYNC_SERVICE,
-  VERSIONS_REPOSITORY,
+  GET_STATE_USE_CASE_TOKEN,
+  PAGE_STATE_SERVICE_TOKEN,
+  ROUTE_QUERY_STATE_SERVICE_TOKEN,
+  SYNC_SERVICE_TOKEN,
+  VERSIONS_REPOSITORY_TOKEN,
 } from "@application/tokens";
 import { VersionsRepository } from "@application/repositories/versions-repository";
 
@@ -44,15 +44,15 @@ export class VersionsListWidgetModule {
     return {
       ngModule: VersionsListWidgetModule,
       providers: [
-        { provide: PAGE_STATE_SERVICE, useExisting: config.PAGE_STATE_SERVICE },
-        { provide: SYNC_SERVICE, useExisting: config.SYNC_SERVICE },
+        { provide: PAGE_STATE_SERVICE_TOKEN, useExisting: config.PAGE_STATE_SERVICE },
+        { provide: SYNC_SERVICE_TOKEN, useExisting: config.SYNC_SERVICE },
         {
-          provide: ROUTE_QUERY_STATE_SERVICE,
+          provide: ROUTE_QUERY_STATE_SERVICE_TOKEN,
           useExisting: config.ROUTE_QUERY_STATE_SERVICE,
         },
-        { provide: GET_STATE_USE_CASE, useExisting: config.GET_STATE_USE_CASE },
+        { provide: GET_STATE_USE_CASE_TOKEN, useExisting: config.GET_STATE_USE_CASE },
         {
-          provide: VERSIONS_REPOSITORY,
+          provide: VERSIONS_REPOSITORY_TOKEN,
           useExisting: config.VERSIONS_REPOSITORY,
         },
       ],

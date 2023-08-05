@@ -5,7 +5,7 @@ import {
   ReviewPageStateInterface,
   StateChanges,
 } from "@application/services/review-page-state.interface";
-import { PAGE_STATE_SERVICE, VERSIONS_REPOSITORY } from "@application/tokens";
+import { PAGE_STATE_SERVICE_TOKEN, VERSIONS_REPOSITORY_TOKEN } from "@application/tokens";
 import { take, withLatestFrom } from "rxjs";
 import { ReviewPageState } from "src/review-page/models/review-page-state";
 import { Version } from "src/review-page/models/version";
@@ -14,9 +14,9 @@ import { VERSION_TYPE } from "src/review-page/models/version-type";
 @Injectable()
 export class AddItemToPlaylistUseCase implements Usecase {
   constructor(
-    @Inject(PAGE_STATE_SERVICE)
+    @Inject(PAGE_STATE_SERVICE_TOKEN)
     private reviewPageState: ReviewPageStateInterface,
-    @Inject(VERSIONS_REPOSITORY) private versionsRepository: VersionsRepository
+    @Inject(VERSIONS_REPOSITORY_TOKEN) private versionsRepository: VersionsRepository
   ) {}
   execute(versionId: number): void {
     this.versionsRepository

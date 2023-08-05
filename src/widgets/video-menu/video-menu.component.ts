@@ -1,5 +1,5 @@
 import { Component, Input, OnDestroy, OnInit, inject } from "@angular/core";
-import { GET_STATE_USE_CASE } from "@application/tokens";
+import { GET_STATE_USE_CASE_TOKEN } from "@application/tokens";
 import {
   Subject,
   distinctUntilChanged,
@@ -20,7 +20,7 @@ export class VideoMenuComponent implements OnInit, OnDestroy {
   @Input() currentVersionId: number | null = null;
   private destroyed$ = new Subject<void>();
 
-  public videoPlaylist$ = inject(GET_STATE_USE_CASE)
+  public videoPlaylist$ = inject(GET_STATE_USE_CASE_TOKEN)
     .execute()
     .pipe(
       map((state) =>

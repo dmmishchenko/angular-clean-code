@@ -4,13 +4,13 @@ import {
   ReviewPageStateInterface,
   StateChanges,
 } from "@application/services/review-page-state.interface";
-import { PAGE_STATE_SERVICE } from "@application/tokens";
+import { PAGE_STATE_SERVICE_TOKEN } from "@application/tokens";
 import { take } from "rxjs";
 
 @Injectable()
 export class RemoveItemFromPlaylistUseCase implements Usecase {
   constructor(
-    @Inject(PAGE_STATE_SERVICE)
+    @Inject(PAGE_STATE_SERVICE_TOKEN)
     private reviewPageState: ReviewPageStateInterface
   ) {}
   execute(removedId: number): void {

@@ -1,6 +1,6 @@
 import { CommonModule } from "@angular/common";
 import { Component, OnDestroy, inject } from "@angular/core";
-import { GET_STATE_USE_CASE } from "@application/tokens";
+import { GET_STATE_USE_CASE_TOKEN } from "@application/tokens";
 import { map } from "rxjs";
 import { JoinSessionUseCase } from "src/widgets/header/usecases/join-session";
 import { LeaveSessionUseCase } from "./usecases/leave-session";
@@ -13,7 +13,7 @@ import { LeaveSessionUseCase } from "./usecases/leave-session";
   imports: [CommonModule],
 })
 export class HeaderMenuComponent implements OnDestroy {
-  public readonly activeVersionName$ = inject(GET_STATE_USE_CASE)
+  public readonly activeVersionName$ = inject(GET_STATE_USE_CASE_TOKEN)
     .execute()
     .pipe(
       map((state) => {

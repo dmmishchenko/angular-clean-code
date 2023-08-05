@@ -2,7 +2,7 @@ import { CommonModule } from "@angular/common";
 import { Component, Inject, Input, OnDestroy, OnInit } from "@angular/core";
 import { FormsModule } from "@angular/forms";
 import { RouteQueryStateInterface } from "@application/services/route-query-state.service";
-import { GET_STATE_USE_CASE, ROUTE_QUERY_STATE_SERVICE } from "@application/tokens";
+import { GET_STATE_USE_CASE_TOKEN, ROUTE_QUERY_STATE_SERVICE_TOKEN } from "@application/tokens";
 import { EMPTY, Observable, Subject, take, takeUntil, tap } from "rxjs";
 import { UniqueId } from "src/review-page/models/unique-id";
 import { Version } from "src/review-page/models/version";
@@ -30,9 +30,9 @@ export class VersionsListComponent implements OnInit, OnDestroy {
   private destroyed$ = new Subject<void>();
 
   constructor(
-    @Inject(GET_STATE_USE_CASE)
+    @Inject(GET_STATE_USE_CASE_TOKEN)
     private getState: GetStateUseCase,
-    @Inject(ROUTE_QUERY_STATE_SERVICE)
+    @Inject(ROUTE_QUERY_STATE_SERVICE_TOKEN)
     private routeQueryStateService: RouteQueryStateInterface,
     private addItemToPlaylist: AddItemToPlaylistUseCase,
     private removeItemFromPlaylist: RemoveItemFromPlaylistUseCase,
