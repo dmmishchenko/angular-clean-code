@@ -1,16 +1,13 @@
 import { Component, Input, OnDestroy, OnInit, inject } from "@angular/core";
+import { GET_STATE_USE_CASE } from "@application/tokens";
 import {
-  EMPTY,
   Subject,
   distinctUntilChanged,
   map,
-  switchMap,
-  takeUntil,
-  tap,
+  takeUntil
 } from "rxjs";
 import { Version } from "src/review-page/models/version";
 import { VERSION_TYPE } from "src/review-page/models/version-type";
-import { GetStateUseCase } from "src/review-page/usecases/get-state";
 import { WorkspaceFacadeService } from "../workspace/workspace-widget.module";
 import { ChangeActiveVersionUseCase } from "./usecases/change-active-version";
 
@@ -23,7 +20,7 @@ export class VideoMenuComponent implements OnInit, OnDestroy {
   @Input() currentVersionId: number | null = null;
   private destroyed$ = new Subject<void>();
 
-  public videoPlaylist$ = inject(GetStateUseCase)
+  public videoPlaylist$ = inject(GET_STATE_USE_CASE)
     .execute()
     .pipe(
       map((state) =>

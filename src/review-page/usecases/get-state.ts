@@ -1,14 +1,15 @@
 import { Inject, Injectable } from "@angular/core";
 import { Usecase } from "@application/base/use-case";
-import { ReviewPageStateService } from "src/review-page/services/review-page-state.service";
-import { ReviewPageState } from "src/review-page/models/review-page-state";
-import { Observable } from "rxjs";
+import { ReviewPageStateInterface } from "@application/services/review-page-state.interface";
 import { PAGE_STATE_SERVICE } from "@application/tokens";
+import { Observable } from "rxjs";
+import { ReviewPageState } from "src/review-page/models/review-page-state";
 
 @Injectable()
 export class GetStateUseCase implements Usecase<Observable<ReviewPageState>> {
   constructor(
-    @Inject(PAGE_STATE_SERVICE) private reviewPageState: ReviewPageStateService
+    @Inject(PAGE_STATE_SERVICE)
+    private reviewPageState: ReviewPageStateInterface
   ) {}
   execute(): Observable<ReviewPageState> {
     return this.reviewPageState.state$;

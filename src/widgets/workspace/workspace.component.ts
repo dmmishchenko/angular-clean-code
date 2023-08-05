@@ -1,7 +1,7 @@
 import { Component, inject } from "@angular/core";
+import { GET_STATE_USE_CASE } from "@application/tokens";
 import { map } from "rxjs";
 import { Version } from "src/review-page/models/version";
-import { GetStateUseCase } from "src/review-page/usecases/get-state";
 
 @Component({
   selector: "workspace",
@@ -9,7 +9,7 @@ import { GetStateUseCase } from "src/review-page/usecases/get-state";
   styleUrls: ["./workspace.component.scss"],
 })
 export class WorkspaceComponent {
-  public playlist$ = inject(GetStateUseCase)
+  public playlist$ = inject(GET_STATE_USE_CASE)
     .execute()
     .pipe(map((state) => state.playlist));
 

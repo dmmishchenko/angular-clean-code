@@ -1,10 +1,14 @@
-import { Injectable } from "@angular/core";
+import { Inject, Injectable } from "@angular/core";
 import { Usecase } from "@application/base/use-case";
-import { ReviewPageStateService } from "src/review-page/services/review-page-state.service";
+import { ReviewPageStateInterface } from "@application/services/review-page-state.interface";
+import { PAGE_STATE_SERVICE } from "@application/tokens";
 
 @Injectable()
 export class ChangeActiveVersionUseCase implements Usecase {
-  constructor(private reviewPageState: ReviewPageStateService) {}
+  constructor(
+    @Inject(PAGE_STATE_SERVICE)
+    private reviewPageState: ReviewPageStateInterface
+  ) {}
   execute(versionId: number): void {
     this.reviewPageState.setState({ activeVersionId: versionId });
   }

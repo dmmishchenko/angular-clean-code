@@ -1,10 +1,13 @@
-import { Injectable } from "@angular/core";
+import { Inject, Injectable } from "@angular/core";
 import { Usecase } from "@application/base/use-case";
-import { SyncService } from "src/review-page/services/sync.service";
+import { SyncServiceInterface } from "@application/services/sync-service.interface";
+import { SYNC_SERVICE } from "@application/tokens";
 
 @Injectable()
 export class LeaveSessionUseCase implements Usecase {
-  constructor(private syncService: SyncService) {}
+  constructor(
+    @Inject(SYNC_SERVICE) private syncService: SyncServiceInterface
+  ) {}
   execute(): void {
     this.syncService.stop();
   }

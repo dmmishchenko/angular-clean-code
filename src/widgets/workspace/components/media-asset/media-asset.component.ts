@@ -1,8 +1,8 @@
 import { Component, Input, inject } from "@angular/core";
+import { GET_STATE_USE_CASE } from "@application/tokens";
 import { map } from "rxjs";
 import { Version } from "src/review-page/models/version";
 import { VERSION_TYPE } from "src/review-page/models/version-type";
-import { GetStateUseCase } from "src/review-page/usecases/get-state";
 import { MediaAssetsService } from "../../services/media-assets.service";
 
 @Component({
@@ -12,7 +12,7 @@ import { MediaAssetsService } from "../../services/media-assets.service";
 })
 export class MediaAssetComponent {
   @Input() version: Version | null = null;
-  isActive$ = inject(GetStateUseCase)
+  isActive$ = inject(GET_STATE_USE_CASE)
     .execute()
     .pipe(
       map((state) => {

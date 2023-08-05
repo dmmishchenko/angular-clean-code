@@ -27,7 +27,7 @@ export class RouteQueryStateService implements RouteQueryStateInterface {
     );
   }
 
-  public getVersionIdFromRoute() {
+  public getVersionIdFromRoute(): Observable<string | number | null> {
     const versionId$ = this.activatedRoute.queryParamMap.pipe(
       map((paramPam) => {
         return new ReviewQueryStateDecorator(paramPam).get(VERSION_ID);

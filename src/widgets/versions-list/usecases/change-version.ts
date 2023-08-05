@@ -1,6 +1,8 @@
 import { Inject, Injectable } from "@angular/core";
 import { Usecase } from "@application/base/use-case";
 import { VersionsRepository } from "@application/repositories/versions-repository";
+import { ReviewPageStateInterface } from "@application/services/review-page-state.interface";
+import { RouteQueryStateInterface } from "@application/services/route-query-state.service";
 import {
   PAGE_STATE_SERVICE,
   ROUTE_QUERY_STATE_SERVICE,
@@ -8,17 +10,15 @@ import {
 } from "@application/tokens";
 import { VERSION_ID } from "src/environments/consts";
 import { ItemNotFoundError } from "src/review-page/errors/item-not-found";
-import { ReviewPageStateService } from "src/review-page/services/review-page-state.service";
-import { RouteQueryStateService } from "src/review-page/services/route-query-state.service";
 
 @Injectable()
 export class ChangeVersionUseCase implements Usecase {
   constructor(
     @Inject(PAGE_STATE_SERVICE)
-    private reviewPageState: ReviewPageStateService,
+    private reviewPageState: ReviewPageStateInterface,
     @Inject(VERSIONS_REPOSITORY) private versionsRepository: VersionsRepository,
     @Inject(ROUTE_QUERY_STATE_SERVICE)
-    private routeQueryStateService: RouteQueryStateService
+    private routeQueryStateService: RouteQueryStateInterface
   ) {}
   execute(versionId: number): void {
     this.versionsRepository.getVersionDetail(versionId).subscribe(

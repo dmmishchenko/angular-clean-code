@@ -3,12 +3,12 @@ import {
   ReviewPageStateInterface,
   StateChanges,
 } from "@application/services/review-page-state.interface";
+import { RouteQueryStateInterface } from "@application/services/route-query-state.service";
+import { SyncServiceInterface } from "@application/services/sync-service.interface";
+import { ROUTE_QUERY_STATE_SERVICE, SYNC_SERVICE } from "@application/tokens";
 import { BehaviorSubject, Observable, OperatorFunction } from "rxjs";
 import { VERSION_ID } from "src/environments/consts";
 import { ReviewPageState } from "src/review-page/models/review-page-state";
-import { RouteQueryStateService } from "./route-query-state.service";
-import { SyncService } from "./sync.service";
-import { SYNC_SERVICE, ROUTE_QUERY_STATE_SERVICE } from "@application/tokens";
 
 @Injectable()
 export class ReviewPageStateService implements ReviewPageStateInterface {
@@ -21,9 +21,9 @@ export class ReviewPageStateService implements ReviewPageStateInterface {
     .pipe(runInZone(this.ngZone));
 
   constructor(
-    @Inject(SYNC_SERVICE) private syncService: SyncService,
+    @Inject(SYNC_SERVICE) private syncService: SyncServiceInterface,
     @Inject(ROUTE_QUERY_STATE_SERVICE)
-    private routeQueryStateService: RouteQueryStateService,
+    private routeQueryStateService: RouteQueryStateInterface,
     private ngZone: NgZone
   ) {}
 

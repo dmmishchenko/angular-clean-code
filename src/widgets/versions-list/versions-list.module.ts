@@ -9,13 +9,21 @@ import { ReviewPageStateInterface } from "@application/services/review-page-stat
 import { SyncServiceInterface } from "@application/services/sync-service.interface";
 import { RouteQueryStateInterface } from "@application/services/route-query-state.service";
 import { GetStateUseCase } from "src/review-page/usecases/get-state";
-import { GET_STATE_USE_CASE, PAGE_STATE_SERVICE, ROUTE_QUERY_STATE_SERVICE, SYNC_SERVICE } from "@application/tokens";
+import {
+  GET_STATE_USE_CASE,
+  PAGE_STATE_SERVICE,
+  ROUTE_QUERY_STATE_SERVICE,
+  SYNC_SERVICE,
+  VERSIONS_REPOSITORY,
+} from "@application/tokens";
+import { VersionsRepository } from "@application/repositories/versions-repository";
 
 export interface VersionsListModuleConfig {
   PAGE_STATE_SERVICE: InjectionToken<ReviewPageStateInterface>;
   SYNC_SERVICE: InjectionToken<SyncServiceInterface>;
   ROUTE_QUERY_STATE_SERVICE: InjectionToken<RouteQueryStateInterface>;
   GET_STATE_USE_CASE: InjectionToken<GetStateUseCase>;
+  VERSIONS_REPOSITORY: InjectionToken<VersionsRepository>;
 }
 
 @NgModule({
@@ -43,8 +51,11 @@ export class VersionsListWidgetModule {
           useExisting: config.ROUTE_QUERY_STATE_SERVICE,
         },
         { provide: GET_STATE_USE_CASE, useExisting: config.GET_STATE_USE_CASE },
+        {
+          provide: VERSIONS_REPOSITORY,
+          useExisting: config.VERSIONS_REPOSITORY,
+        },
       ],
     };
   }
 }
-
