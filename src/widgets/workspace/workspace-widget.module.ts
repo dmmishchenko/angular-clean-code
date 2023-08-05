@@ -1,14 +1,14 @@
 import { CommonModule } from "@angular/common";
 import { InjectionToken, ModuleWithProviders, NgModule } from "@angular/core";
+import { ReviewPageStateInterface } from "@application/services/review-page-state.interface";
+import { PAGE_STATE_SERVICE_TOKEN } from "@application/tokens";
 import { MediaAssetComponent } from "./components/media-asset/media-asset.component";
 import { MediaAssetsService } from "./services/media-assets.service";
 import { WorkspaceFacadeService } from "./services/workspace-facade.service";
 import { WorkspaceComponent } from "./workspace.component";
-import { GetStateUseCase } from "../../review-page/usecases/get-state";
-import { GET_STATE_USE_CASE_TOKEN } from "@application/tokens";
 
 export interface WorkspaceWidgetConfig {
-  GET_STATE_USE_CASE: InjectionToken<GetStateUseCase>;
+  PAGE_STATE_SERVICE: InjectionToken<ReviewPageStateInterface>;
 }
 @NgModule({
   imports: [CommonModule],
@@ -23,7 +23,10 @@ export class WorkspaceWidgetModule {
     return {
       ngModule: WorkspaceWidgetModule,
       providers: [
-        { provide: GET_STATE_USE_CASE_TOKEN, useExisting: config.GET_STATE_USE_CASE },
+        {
+          provide: PAGE_STATE_SERVICE_TOKEN,
+          useExisting: config.PAGE_STATE_SERVICE,
+        },
       ],
     };
   }

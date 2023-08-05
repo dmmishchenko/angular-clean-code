@@ -1,18 +1,20 @@
 import { CommonModule } from "@angular/common";
 import { Component, Inject, Input, OnDestroy, OnInit } from "@angular/core";
 import { FormsModule } from "@angular/forms";
+import { ReviewPageStateInterface } from "@application/services/review-page-state.interface";
 import { RouteQueryStateInterface } from "@application/services/route-query-state.service";
-import { GET_STATE_USE_CASE_TOKEN, ROUTE_QUERY_STATE_SERVICE_TOKEN } from "@application/tokens";
+import {
+  PAGE_STATE_SERVICE_TOKEN,
+  ROUTE_QUERY_STATE_SERVICE_TOKEN
+} from "@application/tokens";
 import { EMPTY, Observable, Subject, take, takeUntil, tap } from "rxjs";
-import { UniqueId } from "src/review-page/models/unique-id";
-import { Version } from "src/review-page/models/version";
-import { VERSION_TYPE } from "src/review-page/models/version-type";
-import { GetStateUseCase } from "src/review-page/usecases/get-state";
+import { UniqueId } from "@application/models/unique-id";
+import { Version } from "@application/models/version";
 import { AddItemToPlaylistUseCase } from "./usecases/add-item-to-playlist";
 import { ChangeVersionUseCase } from "./usecases/change-version";
 import { GetVersionsListUseCase } from "./usecases/get-versions-list";
 import { RemoveItemFromPlaylistUseCase } from "./usecases/remove-item-from-playlist";
-
+import { VERSION_TYPE } from "@application/models/version-type";
 
 @Component({
   selector: "versions-list",
@@ -30,8 +32,8 @@ export class VersionsListComponent implements OnInit, OnDestroy {
   private destroyed$ = new Subject<void>();
 
   constructor(
-    @Inject(GET_STATE_USE_CASE_TOKEN)
-    private getState: GetStateUseCase,
+    @Inject(PAGE_STATE_SERVICE_TOKEN)
+    private reviewPageStateService: ReviewPageStateInterface,
     @Inject(ROUTE_QUERY_STATE_SERVICE_TOKEN)
     private routeQueryStateService: RouteQueryStateInterface,
     private addItemToPlaylist: AddItemToPlaylistUseCase,
@@ -57,8 +59,7 @@ export class VersionsListComponent implements OnInit, OnDestroy {
         }
       });
 
-    this.getState
-      .execute()
+    this.reviewPageStateService.state$
       .pipe(takeUntil(this.destroyed$))
       .subscribe((state) => {
         this.playlist = state.playlist;

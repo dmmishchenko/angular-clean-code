@@ -1,7 +1,9 @@
 import { Component, inject } from "@angular/core";
-import { GET_STATE_USE_CASE_TOKEN } from "@application/tokens";
+import {
+  PAGE_STATE_SERVICE_TOKEN
+} from "@application/tokens";
 import { map } from "rxjs";
-import { Version } from "src/review-page/models/version";
+import { Version } from "@application/models/version";
 
 @Component({
   selector: "workspace",
@@ -9,9 +11,9 @@ import { Version } from "src/review-page/models/version";
   styleUrls: ["./workspace.component.scss"],
 })
 export class WorkspaceComponent {
-  public playlist$ = inject(GET_STATE_USE_CASE_TOKEN)
-    .execute()
-    .pipe(map((state) => state.playlist));
+  public playlist$ = inject(PAGE_STATE_SERVICE_TOKEN).state$.pipe(
+    map((state) => state.playlist)
+  );
 
   public trackByFunc(_: number, item: Version) {
     return item.id;

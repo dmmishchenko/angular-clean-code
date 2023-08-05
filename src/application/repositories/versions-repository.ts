@@ -1,7 +1,7 @@
 import { Observable } from "rxjs";
 import { InjectionToken } from "@angular/core";
-import { Version } from "src/review-page/models/version";
-import { VersionMessage } from "src/review-page/models/version-message";
+import { Version } from "@application/models/version";
+import { VersionMessage } from "@application/models/version-message";
 
 export interface VersionsRepository {
   getVersionsList(id?: number): Observable<Version[]>;

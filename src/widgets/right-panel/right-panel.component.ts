@@ -1,6 +1,6 @@
 import { CommonModule } from "@angular/common";
 import { Component, Input } from "@angular/core";
-import { VersionMessage } from "src/review-page/models/version-message";
+import { VersionMessage } from "@application/models/version-message";
 import { GetVersionMessagesUseCase } from "src/widgets/right-panel/usecases/get-version-messages";
 import { Observable } from "rxjs";
 

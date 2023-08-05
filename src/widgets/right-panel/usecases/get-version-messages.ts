@@ -2,7 +2,7 @@ import { Inject, Injectable } from "@angular/core";
 import { Usecase } from "@application/base/use-case";
 import { VersionsRepository } from "@application/repositories/versions-repository";
 import { VERSIONS_REPOSITORY_TOKEN } from "@application/tokens";
-import { VersionMessage } from "@models/version-message";
+import { VersionMessage } from "@application/models/version-message";
 import { Observable } from "rxjs";
 
 @Injectable()

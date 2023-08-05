@@ -1,4 +1,4 @@
-import { ReviewPageState } from "src/review-page/models/review-page-state";
+import { ReviewPageState } from "@models/review-page-state";
 import { Observable } from "rxjs";
 
 export type StateChanges = {

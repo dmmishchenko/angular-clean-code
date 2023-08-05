@@ -1,9 +1,11 @@
 import { Component, Input, inject } from "@angular/core";
-import { GET_STATE_USE_CASE_TOKEN } from "@application/tokens";
+import {
+  PAGE_STATE_SERVICE_TOKEN
+} from "@application/tokens";
 import { map } from "rxjs";
-import { Version } from "src/review-page/models/version";
-import { VERSION_TYPE } from "src/review-page/models/version-type";
 import { MediaAssetsService } from "../../services/media-assets.service";
+import { Version } from "@application/models/version";
+import { VERSION_TYPE } from "@application/models/version-type";
 
 @Component({
   selector: "media-asset",
@@ -12,16 +14,14 @@ import { MediaAssetsService } from "../../services/media-assets.service";
 })
 export class MediaAssetComponent {
   @Input() version: Version | null = null;
-  isActive$ = inject(GET_STATE_USE_CASE_TOKEN)
-    .execute()
-    .pipe(
-      map((state) => {
-        if (state.activeVersionId) {
-          return this.version?.id === state.activeVersionId;
-        }
-        return false;
-      })
-    );
+  isActive$ = inject(PAGE_STATE_SERVICE_TOKEN).state$.pipe(
+    map((state) => {
+      if (state.activeVersionId) {
+        return this.version?.id === state.activeVersionId;
+      }
+      return false;
+    })
+  );
 
   public readonly versionTypes = VERSION_TYPE;
 
@@ -30,7 +30,7 @@ export class MediaAssetComponent {
   onLoadedMetadata(event: Event) {
     const video = event.target as HTMLVideoElement;
     if (video) {
-      this.mediaAssetsService.setAsset(video)
+      this.mediaAssetsService.setAsset(video);
     }
   }
 

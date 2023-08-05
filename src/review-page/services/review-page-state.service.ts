@@ -8,7 +8,7 @@ import { SyncServiceInterface } from "@application/services/sync-service.interfa
 import { ROUTE_QUERY_STATE_SERVICE_TOKEN, SYNC_SERVICE_TOKEN } from "@application/tokens";
 import { BehaviorSubject, Observable, OperatorFunction } from "rxjs";
 import { VERSION_ID } from "src/environments/consts";
-import { ReviewPageState } from "src/review-page/models/review-page-state";
+import { ReviewPageState } from "@models/review-page-state";
 
 @Injectable()
 export class ReviewPageStateService implements ReviewPageStateInterface {

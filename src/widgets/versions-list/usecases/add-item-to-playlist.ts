@@ -7,9 +7,9 @@ import {
 } from "@application/services/review-page-state.interface";
 import { PAGE_STATE_SERVICE_TOKEN, VERSIONS_REPOSITORY_TOKEN } from "@application/tokens";
 import { take, withLatestFrom } from "rxjs";
-import { ReviewPageState } from "src/review-page/models/review-page-state";
-import { Version } from "src/review-page/models/version";
-import { VERSION_TYPE } from "src/review-page/models/version-type";
+import { ReviewPageState } from "@models/review-page-state";
+import { Version } from "@application/models/version";
+import { VERSION_TYPE } from "@application/models/version-type";
 
 @Injectable()
 export class AddItemToPlaylistUseCase implements Usecase {

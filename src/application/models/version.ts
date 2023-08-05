@@ -1,4 +1,4 @@
-import { UniqueId } from "./unique-id";
+import { UniqueId } from "../../application/models/unique-id";
 import { VERSION_TYPE } from "./version-type";
 import { VersionUrl } from "./version-url";
 
