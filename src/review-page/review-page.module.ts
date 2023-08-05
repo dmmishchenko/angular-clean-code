@@ -7,24 +7,19 @@ import {
   VERSIONS_REPOSITORY_TOKEN,
 } from "@application/tokens";
 import {
-  HeaderWidgetConfig,
-  HeaderWidgetModule,
+  HeaderWidgetModule
 } from "../widgets/header/header-widget.module";
 import {
-  RightPanelWidgetConfig,
-  RightPanelWidgetModule,
+  RightPanelWidgetModule
 } from "../widgets/right-panel/right-panel.module";
 import {
-  VersionsListModuleConfig,
-  VersionsListWidgetModule,
+  VersionsListWidgetModule
 } from "../widgets/versions-list/versions-list.module";
 import {
-  VideoMenuWidgetConfig,
-  VideoMenuWidgetModule,
+  VideoMenuWidgetModule
 } from "../widgets/video-menu/video-menu-widget.module";
 import {
-  WorkspaceWidgetConfig,
-  WorkspaceWidgetModule,
+  WorkspaceWidgetModule
 } from "../widgets/workspace/workspace-widget.module";
 import { VersionsMockRepository } from "./repositories/versions-mock.repository";
 import { ReviewPageRoutingModule } from "./review-page-routing.module";
@@ -32,40 +27,23 @@ import { ReviewPage } from "./review-page.component";
 import { ReviewPageStateService } from "./services/review-page-state.service";
 import { RouteQueryStateService } from "./services/route-query-state.service";
 import { SyncService } from "./services/sync.service";
-
-const VersionsListWidgetConfig: VersionsListModuleConfig = {
-  PAGE_STATE_SERVICE: PAGE_STATE_SERVICE_TOKEN,
-  SYNC_SERVICE: SYNC_SERVICE_TOKEN,
-  ROUTE_QUERY_STATE_SERVICE: ROUTE_QUERY_STATE_SERVICE_TOKEN,
-  VERSIONS_REPOSITORY: VERSIONS_REPOSITORY_TOKEN,
-};
-
-const HeaderWidgetConfig: HeaderWidgetConfig = {
-  SYNC_SERVICE: SYNC_SERVICE_TOKEN,
-  PAGE_STATE_SERVICE: PAGE_STATE_SERVICE_TOKEN,
-};
-
-const RightPanelWidgetConfig: RightPanelWidgetConfig = {
-  VERSIONS_REPOSITORY: VERSIONS_REPOSITORY_TOKEN,
-};
-
-const WorkspaceWidgetConfig: WorkspaceWidgetConfig = {
-  PAGE_STATE_SERVICE: PAGE_STATE_SERVICE_TOKEN,
-};
-
-const VideoMenuWidgetConfig: VideoMenuWidgetConfig = {
-  PAGE_STATE_SERVICE: PAGE_STATE_SERVICE_TOKEN,
-};
+import {
+  HeaderWidgetDependencies,
+  RightPanelWidgetDependencies,
+  VersionsListWidgetDependencies,
+  VideoMenuWidgetDependencies,
+  WorkspaceWidgetDependencies,
+} from "./widgets_dependencies";
 
 @NgModule({
   imports: [
     CommonModule,
     ReviewPageRoutingModule,
-    VersionsListWidgetModule.forRoot(VersionsListWidgetConfig),
-    WorkspaceWidgetModule.forRoot(WorkspaceWidgetConfig),
-    HeaderWidgetModule.forRoot(HeaderWidgetConfig),
-    RightPanelWidgetModule.forRoot(RightPanelWidgetConfig),
-    VideoMenuWidgetModule.forRoot(VideoMenuWidgetConfig),
+    VersionsListWidgetModule.forRoot(VersionsListWidgetDependencies),
+    WorkspaceWidgetModule.forRoot(WorkspaceWidgetDependencies),
+    HeaderWidgetModule.forRoot(HeaderWidgetDependencies),
+    RightPanelWidgetModule.forRoot(RightPanelWidgetDependencies),
+    VideoMenuWidgetModule.forRoot(VideoMenuWidgetDependencies),
   ],
   declarations: [ReviewPage],
   providers: [
