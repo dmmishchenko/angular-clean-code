@@ -24,7 +24,7 @@ import {
 import { VersionsMockRepository } from "./repositories/versions-mock.repository";
 import { ReviewPageRoutingModule } from "./review-page-routing.module";
 import { ReviewPage } from "./review-page.component";
-import { ReviewPageStateService } from "./services/review-page-state.service";
+import { ReviewPageStateService } from "./services/review-page-state/review-page-state.service";
 import { RouteQueryStateService } from "./services/route-query-state.service";
 import { SyncService } from "./services/sync/sync.service";
 import {

@@ -14,7 +14,7 @@ export class JoinSessionUseCase implements Usecase {
   execute(): void {
     const cb = (event: MessageEvent) => {
       const { changes } = event.data;
-      this.reviewPageStateService.assignSyncState(changes);
+      this.reviewPageStateService.setSyncState(changes);
     };
 
     this.syncService.listen(cb);

@@ -8,5 +8,5 @@ export type StateChanges = {
 export interface PageStateInterface {
   state$: Observable<PageState>;
   setState(changes: StateChanges): void;
-  assignSyncState(changes: StateChanges): void;
+  setSyncState(changes: StateChanges): void;
 }

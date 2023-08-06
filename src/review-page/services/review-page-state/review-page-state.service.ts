@@ -1,4 +1,4 @@
-import { Inject, Injectable, NgZone } from "@angular/core";
+import { Inject, Injectable, NgZone, inject } from "@angular/core";
 import {
   PageStateInterface,
   StateChanges,
@@ -21,36 +21,46 @@ export class ReviewPageStateService implements PageStateInterface {
   });
   public state$: Observable<PageState> = this.state$$
     .asObservable()
-    .pipe(runInZone(this.ngZone));
+    .pipe(runInZone(inject(NgZone)));
 
   constructor(
     @Inject(SYNC_SERVICE_TOKEN)
     private syncService: SyncServiceInterface,
     @Inject(ROUTE_QUERY_STATE_SERVICE_TOKEN)
-    private routeQueryStateService: RouteQueryStateInterface,
-    private ngZone: NgZone
+    private routeQueryStateService: RouteQueryStateInterface
   ) {}
 
   public setState(changes: StateChanges): void {
-    const currentState = this.state$$.getValue();
-    const newState = Object.assign(currentState, changes);
+    this.validateChanges(changes);
+    this.assignChanges(changes);
 
-    this.state$$.next(newState);
-    if (changes.activeVersionId !== undefined) {
-      this.routeQueryStateService.changeState({
-        [VERSION_ID]: changes.activeVersionId,
-      });
-    }
     if (this.syncService.isInSync) {
       this.syncService.postChange(changes);
     }
   }
 
-  public assignSyncState(changes: StateChanges): void {
+  public setSyncState(changes: StateChanges): void {
+    this.validateChanges(changes);
+    this.assignChanges(changes);
+  }
+
+  private validateChanges(changes: StateChanges) {
+    const props = Object.getOwnPropertyNames(changes);
+    if (props.length === 0) {
+      throw new Error("Empty state changes");
+    }
+  }
+
+  private assignChanges(changes: StateChanges): void {
     const currentState = this.state$$.getValue();
     const newState = Object.assign(currentState, changes);
-
     this.state$$.next(newState);
+
+    if (changes.activeVersionId !== undefined) {
+      this.routeQueryStateService.changeState({
+        [VERSION_ID]: changes.activeVersionId,
+      });
+    }
   }
 }
 
