@@ -2,7 +2,6 @@
   <ng-container *ngIf="version">
     <video
       preload="auto"
-      (loadedmetadata)="onLoadedMetadata($event)"
       (loadeddata)="onAssetLoad()"
       *ngIf="version.type === versionTypes.VIDEO"
       controls

@@ -1,6 +1,7 @@
 import { CommonModule } from "@angular/common";
 import { NgModule } from "@angular/core";
 import {
+  MESSAGE_BUS_TOKEN,
   PAGE_STATE_SERVICE_TOKEN,
   ROUTE_QUERY_STATE_SERVICE_TOKEN,
   SYNC_SERVICE_TOKEN,
@@ -34,6 +35,7 @@ import {
   VideoMenuWidgetDependencies,
   WorkspaceWidgetDependencies,
 } from "./widgets_dependencies";
+import { MessageBusService } from "./services/message-bus.service";
 
 @NgModule({
   imports: [
@@ -54,6 +56,7 @@ import {
       useClass: RouteQueryStateService,
     },
     { provide: VERSIONS_REPOSITORY_TOKEN, useClass: VersionsMockRepository },
+    { provide: MESSAGE_BUS_TOKEN, useClass: MessageBusService },
   ],
 })
 export class ReviewPageModule {}

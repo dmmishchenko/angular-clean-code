@@ -1,13 +1,26 @@
-import { Component, Input, OnDestroy, OnInit, inject } from "@angular/core";
 import {
-  PAGE_STATE_SERVICE_TOKEN
+  Component,
+  Inject,
+  Input,
+  OnDestroy,
+  OnInit,
+  inject,
+} from "@angular/core";
+import {
+  MESSAGE_BUS_TOKEN,
+  PAGE_STATE_SERVICE_TOKEN,
 } from "@application/tokens";
 import { Subject, distinctUntilChanged, map, takeUntil } from "rxjs";
-import { WorkspaceFacadeService } from "../workspace/workspace-widget.module";
 import { ChangeActiveVersionUseCase } from "./usecases/change-active-version";
 import { ASSET_VERSION_TYPE } from "@application/models/asset-version-type";
 import { AssetVersion } from "@application/models/asset-version";
+import {
+  MESSAGE_ACTION,
+  MessageBus,
+} from "@application/services/message-bus.interface";
+import { ASSET_STATE } from "../workspace/services/media-assets.service";
 
+const LOADING_CLASS = "loading";
 @Component({
   selector: "video-menu",
   templateUrl: "./video-menu.component.html",
@@ -29,11 +42,11 @@ export class VideoMenuComponent implements OnInit, OnDestroy {
 
   constructor(
     private changeActiveVersionUseCase: ChangeActiveVersionUseCase,
-    private workspaceFacade: WorkspaceFacadeService
+    @Inject(MESSAGE_BUS_TOKEN) private messageBus: MessageBus
   ) {}
 
   ngOnInit(): void {
-    // need to wait when all video assets are loaded and enable their sliders
+    this.listenToAssetStateChange();
   }
 
   public trackByFunc(_: number, item: AssetVersion) {
@@ -42,6 +55,20 @@ export class VideoMenuComponent implements OnInit, OnDestroy {
 
   public changeVideo(versionId: number) {
     this.changeActiveVersionUseCase.execute(versionId);
+  }
+
+  private listenToAssetStateChange() {
+    this.messageBus
+      .fromAction(MESSAGE_ACTION.ASSET_STATE_CHANGED)
+      .subscribe((message) => {
+        const { id, state } = message.body;
+        if (state === ASSET_STATE.LOADED) {
+          const slider = document.getElementById(id);
+          if (slider) {
+            slider.classList.remove(LOADING_CLASS);
+          }
+        }
+      });
   }
 
   ngOnDestroy(): void {
