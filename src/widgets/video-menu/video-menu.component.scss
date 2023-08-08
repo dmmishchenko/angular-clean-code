@@ -23,4 +23,8 @@
   background-color: red;
   width: 1px;
   transform: translateX(0);
+  visibility: hidden;
+  &.visible {
+    visibility: visible;
+  }
 }

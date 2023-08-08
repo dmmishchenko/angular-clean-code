@@ -1,11 +1,16 @@
-<div class="video-menu-wrapper">
+<div
+  class="video-menu-wrapper"
+  (pointermove)="onPointerMove($event)"
+  (pointerdown)="onPointerDown($event)"
+>
   <ng-container *ngIf="videoPlaylist$ | async as versions">
     <ng-container *ngIf="versions.length">
       <ng-container *ngFor="let version of versions">
-        <div class="slider loading" [id]="version.id" (click)="changeVideo(version.id)">
+        <div class="slider loading" [id]="version.id">
           <div
+            id="slider_{{ version.id }}"
             class="slider-cursor"
-            *ngIf="version.id === currentVersionId"
+            [class.visible]="version.id === currentVersionId"
           ></div>
         </div>
       </ng-container>

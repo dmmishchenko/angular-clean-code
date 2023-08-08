@@ -4,9 +4,8 @@
       preload="auto"
       (loadeddata)="onAssetLoad()"
       *ngIf="version.type === versionTypes.VIDEO"
-      controls
       src="{{ version.url }}"
-      id="videoAsset"
+      id="videoAsset_{{ version.id }}"
     ></video>
     <img *ngIf="version.type === versionTypes.IMAGE" src="{{ version.url }}" />
   </ng-container>
