@@ -1,4 +1,6 @@
 import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
   HostListener,
   Inject,
@@ -24,16 +26,28 @@ import { ChangeActiveVersionUseCase } from "./usecases/change-active-version";
 const LOADING_CLASS = "loading";
 const VIDEO_DIGITS_ROUND = 5;
 
+const INITIAL_RAF_TIMER = -Infinity;
 @Component({
   selector: "video-menu",
   templateUrl: "./video-menu.component.html",
   styleUrls: ["./video-menu.component.scss"],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class VideoMenuComponent implements OnInit, OnDestroy {
-  @Input() currentVersionId: number | null = null;
+  private _currentVersionId: number | null = null;
+  public get currentVersionId(): number | null {
+    return this._currentVersionId;
+  }
+  @Input()
+  public set currentVersionId(value: number | null) {
+    this._currentVersionId = value;
+    this.lastRafTime = INITIAL_RAF_TIMER;
+  }
 
   private destroyed$ = new Subject<void>();
-  private state: "INITIAL" | "POINTER_DOWN" = "INITIAL";
+  private pointerState: "INITIAL" | "POINTER_DOWN" = "INITIAL";
+  private lastRafTime = INITIAL_RAF_TIMER;
+  private rafTimerNumber = 0;
 
   public videoPlaylist$ = inject(PAGE_STATE_SERVICE_TOKEN).state$.pipe(
     map((state) =>
@@ -44,14 +58,17 @@ export class VideoMenuComponent implements OnInit, OnDestroy {
     }),
     takeUntil(this.destroyed$)
   );
+  public isPlaying = false;
 
   constructor(
     private changeActiveVersionUseCase: ChangeActiveVersionUseCase,
-    @Inject(MESSAGE_BUS_TOKEN) private messageBus: MessageBus
+    @Inject(MESSAGE_BUS_TOKEN) private messageBus: MessageBus,
+    private cdr: ChangeDetectorRef
   ) {}
 
   ngOnInit(): void {
     this.listenToAssetStateChange();
+    this.checkCursorPosition();
   }
 
   public trackByFunc(_: number, item: AssetVersion) {
@@ -63,17 +80,17 @@ export class VideoMenuComponent implements OnInit, OnDestroy {
   }
 
   public onPointerMove(event: PointerEvent): void {
-    if (isOnSlider(event) && this.state === "POINTER_DOWN") {
+    if (isOnSlider(event) && this.pointerState === "POINTER_DOWN") {
       const { id, clientWidth } = event.target as HTMLDivElement;
 
       if (this.currentVersionId !== +id) {
         this.changeActiveVersionUseCase.execute(+id);
       }
 
-      const slider = getSlider(id);
+      const cursor = getCursor(id);
       const pos = event.offsetX;
-      if (slider) {
-        slider.style.transform = `translateX(${pos}px)`;
+      if (cursor) {
+        setCursorPositionStyle(cursor, pos);
       }
       this.updateVideoTime(pos, clientWidth, id);
     }
@@ -81,23 +98,50 @@ export class VideoMenuComponent implements OnInit, OnDestroy {
 
   public onPointerDown(event: PointerEvent): void {
     if (isOnSlider(event)) {
-      this.state = "POINTER_DOWN";
+      this.pointerState = "POINTER_DOWN";
       const { id, clientWidth } = event.target as HTMLDivElement;
       if (this.currentVersionId !== +id) {
         this.changeActiveVersionUseCase.execute(+id);
       }
 
-      const slider = getSlider(id);
+      const cursor = getCursor(id);
       const pos = event.offsetX;
-      if (slider) {
-        slider.style.transform = `translateX(${pos}px)`;
+      if (cursor) {
+        cursor.style.transform = `translateX(${pos}px)`;
       }
       this.updateVideoTime(pos, clientWidth, id);
     }
   }
   @HostListener("document:pointerup", ["$event"])
   public onPointerUp() {
-    this.state = "INITIAL";
+    this.pointerState = "INITIAL";
+  }
+
+  public togglePlayingState() {
+    if (!this.currentVersionId) {
+      return;
+    }
+    const video = this.getVideo(this.currentVersionId);
+    if (!video) {
+      return;
+    }
+
+    if (this.isPlaying) {
+      //stop playing
+      video.pause();
+      this.isPlaying = false;
+      this.cdr.markForCheck();
+    } else {
+      video
+        .play()
+        .then(() => {
+          this.isPlaying = true;
+          this.cdr.markForCheck();
+        })
+        .catch((err) => {
+          console.error(err);
+        });
+    }
   }
 
   private listenToAssetStateChange() {
@@ -106,7 +150,7 @@ export class VideoMenuComponent implements OnInit, OnDestroy {
       .subscribe((message) => {
         const { id, state } = message.body;
         if (state === ASSET_STATE.LOADED) {
-          const slider = document.getElementById(id);
+          const slider = getSlider(id);
           if (slider) {
             slider.classList.remove(LOADING_CLASS);
           }
@@ -116,26 +160,72 @@ export class VideoMenuComponent implements OnInit, OnDestroy {
 
   private updateVideoTime(pos: number, clientWidth: number, id: string) {
     const timePercentage = getTimePercentageFromPosition(pos, clientWidth);
-    const video = document.getElementById(
+    const video = this.getVideo(id);
+    if (video && video.duration) {
+      const newTime = +(timePercentage * video.duration).toFixed(
+        VIDEO_DIGITS_ROUND
+      );
+      video.currentTime = newTime;
+    }
+  }
+
+  private getVideo(id: string | number): HTMLVideoElement | null {
+    return document.getElementById(
       `videoAsset_${id}`
     ) as HTMLVideoElement | null;
-    if (video && video.duration) {
-      const newTime = +(timePercentage * video.duration).toFixed(VIDEO_DIGITS_ROUND);
-      video.currentTime = newTime;
+  }
+
+  private checkCursorPosition() {
+    this.rafTimerNumber = window.requestAnimationFrame(() => {
+      if (this.currentVersionId && this.pointerState !== "POINTER_DOWN") {
+        const currentVideo = this.getVideo(this.currentVersionId);
+        if (currentVideo && this.lastRafTime !== currentVideo.currentTime) {
+          this.lastRafTime = currentVideo.currentTime;
+          this.tryUpdateCursorPosition(currentVideo, this.currentVersionId);
+        }
+      }
+      window.requestAnimationFrame(() => this.checkCursorPosition());
+    });
+  }
+
+  private tryUpdateCursorPosition(
+    currentVideo: HTMLVideoElement,
+    versionId: number
+  ) {
+    const cursor = getCursor(versionId);
+    const slider = getSlider(versionId);
+    if (slider && cursor) {
+      const pos =
+        +(currentVideo.currentTime / currentVideo.duration).toFixed(
+          VIDEO_DIGITS_ROUND
+        ) * slider.clientWidth;
+      setCursorPositionStyle(cursor, pos);
     }
   }
 
   ngOnDestroy(): void {
     this.destroyed$.next();
     this.destroyed$.complete();
+    window.cancelAnimationFrame(this.rafTimerNumber);
   }
 }
 
-function getSlider(id: string) {
-  return document.getElementById(`slider_${id}`);
+function getSlider(id: string | number) {
+  return document.getElementById(id.toString());
 }
 
-function getTimePercentageFromPosition(pos: number, clientWidth: number):number {
+function setCursorPositionStyle(cursor: HTMLElement, pos: number) {
+  cursor.style.transform = `translateX(${pos}px)`;
+}
+
+function getCursor(id: string | number) {
+  return document.getElementById(`cursor_${id}`);
+}
+
+function getTimePercentageFromPosition(
+  pos: number,
+  clientWidth: number
+): number {
   return +(pos / clientWidth).toFixed(VIDEO_DIGITS_ROUND);
 }
 

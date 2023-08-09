@@ -1,6 +1,5 @@
 .video-menu-wrapper {
   border: 1px solid;
-  margin: 10px 30px 0 30px;
   height: 40px;
   display: flex;
   width: calc(100% - 60px);
@@ -27,4 +26,16 @@
   &.visible {
     visibility: visible;
   }
+}
+
+.wrapper {
+  margin: 10px 30px 0 30px;
+  gap: 10px;
+  display: flex;
+  align-items: center;
+}
+
+.tools{
+  display: flex;
+  width: 100px;
 }
