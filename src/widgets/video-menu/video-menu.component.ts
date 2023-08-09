@@ -88,7 +88,7 @@ export class VideoMenuComponent implements OnInit, OnDestroy {
       }
 
       const cursor = getCursor(id);
-      const pos = event.offsetX;
+      const pos = Math.min(event.offsetX, clientWidth);
       if (cursor) {
         setCursorPositionStyle(cursor, pos);
       }
@@ -211,10 +211,12 @@ export class VideoMenuComponent implements OnInit, OnDestroy {
     const cursor = getCursor(versionId);
     const slider = getSlider(versionId);
     if (slider && cursor) {
-      const pos =
+      const pos = Math.min(
+        slider.clientWidth,
         +(currentVideo.currentTime / currentVideo.duration).toFixed(
           VIDEO_DIGITS_ROUND
-        ) * slider.clientWidth;
+        ) * slider.clientWidth
+      );
       setCursorPositionStyle(cursor, pos);
     }
   }
