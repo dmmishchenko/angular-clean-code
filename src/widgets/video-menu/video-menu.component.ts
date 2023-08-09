@@ -19,7 +19,7 @@ import {
   MESSAGE_BUS_TOKEN,
   PAGE_STATE_SERVICE_TOKEN,
 } from "@application/tokens";
-import { Subject, distinctUntilChanged, map, takeUntil } from "rxjs";
+import { Subject, distinctUntilChanged, map, take, takeUntil } from "rxjs";
 import { ASSET_STATE } from "../workspace/services/media-assets.service";
 import { ChangeActiveVersionUseCase } from "./usecases/change-active-version";
 
@@ -68,7 +68,7 @@ export class VideoMenuComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.listenToAssetStateChange();
-    this.checkCursorPosition();
+    this.setRaf();
   }
 
   public trackByFunc(_: number, item: AssetVersion) {
@@ -175,8 +175,9 @@ export class VideoMenuComponent implements OnInit, OnDestroy {
     ) as HTMLVideoElement | null;
   }
 
-  private checkCursorPosition() {
+  private setRaf() {
     this.rafTimerNumber = window.requestAnimationFrame(() => {
+      //cursor update section
       if (this.currentVersionId && this.pointerState !== "POINTER_DOWN") {
         const currentVideo = this.getVideo(this.currentVersionId);
         if (currentVideo && this.lastRafTime !== currentVideo.currentTime) {
@@ -184,7 +185,22 @@ export class VideoMenuComponent implements OnInit, OnDestroy {
           this.tryUpdateCursorPosition(currentVideo, this.currentVersionId);
         }
       }
-      window.requestAnimationFrame(() => this.checkCursorPosition());
+      //on video ended handle
+      if (this.currentVersionId) {
+        const currentVideo = this.getVideo(this.currentVersionId);
+        const closeToEnd =
+          currentVideo &&
+          currentVideo.duration - currentVideo.currentTime <= 0.01;
+
+        if (closeToEnd) {
+          this.videoPlaylist$.pipe(take(1)).subscribe((versions) => {
+            if (versions.length > 1) {
+              this.trySetNextVideo(versions, this.currentVersionId!);
+            }
+          });
+        }
+      }
+      window.requestAnimationFrame(() => this.setRaf());
     });
   }
 
@@ -200,6 +216,30 @@ export class VideoMenuComponent implements OnInit, OnDestroy {
           VIDEO_DIGITS_ROUND
         ) * slider.clientWidth;
       setCursorPositionStyle(cursor, pos);
+    }
+  }
+
+  private trySetNextVideo(
+    versions: AssetVersion[],
+    activeVersionId: number
+  ): void {
+    const currentItemIndex = versions.findIndex(
+      (version) => version.id === activeVersionId
+    );
+    if (currentItemIndex > -1) {
+      if (currentItemIndex < versions.length - 1) {
+        const nextItemId = versions[currentItemIndex + 1].id;
+
+        const currVideo = this.getVideo(versions[currentItemIndex].id);
+        const nextVideo = this.getVideo(nextItemId);
+
+        if (currVideo && nextVideo) {
+          currVideo.pause();
+          nextVideo.play().then(() => {
+            this.changeActiveVersionUseCase.execute(nextItemId);
+          });
+        }
+      }
     }
   }
 
