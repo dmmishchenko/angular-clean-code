@@ -22,10 +22,8 @@
     "lib": ["ES2022", "dom"],
     "paths": {
       "@usecases/*": ["./src/application/usecases/*"],
-      "@domain/*": ["./src/domain/*"],
-      "@application/*": ["./src/application/*"],
-      "@data/*": ["./src/data/*"],
-      "@ui/*": ["./src/ui/*"]
+      "@models/*": ["src/review-page/models/*"],
+      "@application/*": ["./src/application/*"]
     }
   },
   "angularCompilerOptions": {
