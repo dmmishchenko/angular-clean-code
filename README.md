@@ -3,6 +3,9 @@
 внутри каждого виджета есть свои usecases, services и components
 - виджет может взаимодействовать с другими виджетами или через общие сервисы уровня приложения или через фасады виджетов
 
+#### Clean code architecture [тут](https://github.com/dmmishchenko/angular-clean-code/tree/clean-code-architecture)
+
+
 Остальное осталось примерно таким же:
 - ui работает через usecases(application слой)
 - usecases могут обращаться к репозиториям и сервисам (data слой)
