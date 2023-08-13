@@ -5,7 +5,6 @@
 
 #### Clean code architecture [тут](https://github.com/dmmishchenko/angular-clean-code/tree/clean-code-architecture)
 
-
 Остальное осталось примерно таким же:
 - ui работает через usecases(application слой)
 - usecases могут обращаться к репозиториям и сервисам (data слой)
