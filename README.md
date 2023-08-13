@@ -1,5 +1,5 @@
 # angular-clean-code
-### Пример реализации чистой архитектуры.
+### Пример реализации widget архитектуры.
 #### Архитектуру через виджеты смотреть [тут](https://github.com/dmmishchenko/angular-clean-code/tree/widgets-architecture)
 внутри разбиение на слои: application, data, domain, ui
 - ui работает через usecases(application слой)
