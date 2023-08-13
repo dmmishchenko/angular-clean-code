@@ -1,4 +1,12 @@
-import { Component, Input, inject } from "@angular/core";
+import {
+  AfterViewInit,
+  Component,
+  ElementRef,
+  Input,
+  OnDestroy,
+  ViewChild,
+  inject,
+} from "@angular/core";
 import { PAGE_STATE_SERVICE_TOKEN } from "@application/tokens";
 import { map } from "rxjs";
 import {
@@ -14,8 +22,11 @@ const DELAY_TIME_MS = 500;
   templateUrl: "./media-asset.component.html",
   styleUrls: ["./media-asset.component.scss"],
 })
-export class MediaAssetComponent {
+export class MediaAssetComponent implements AfterViewInit, OnDestroy {
   @Input() version: AssetVersion | null = null;
+  @ViewChild("asset") assetRef: ElementRef<
+    HTMLImageElement | HTMLVideoElement
+  > | null = null;
 
   public isActive$ = inject(PAGE_STATE_SERVICE_TOKEN).state$.pipe(
     map((state) => {
@@ -29,15 +40,29 @@ export class MediaAssetComponent {
 
   constructor(private mediaAssetsService: MediaAssetsService) {}
 
+  ngAfterViewInit(): void {
+    if (this.assetRef && this.version) {
+      this.mediaAssetsService.emitAssetElement(
+        this.version.id,
+        this.assetRef.nativeElement
+      );
+    }
+  }
 
   onAssetLoad() {
     setTimeout(() => {
       if (this.version) {
-        this.mediaAssetsService.setAssetState(
+        this.mediaAssetsService.emitAssetState(
           this.version.id,
           ASSET_STATE.LOADED
         );
       }
     }, DELAY_TIME_MS);
+  }
+
+  ngOnDestroy(): void {
+    if (this.assetRef && this.version) {
+      this.mediaAssetsService.emitAssetDestroyed(this.version.id);
+    }
   }
 }

@@ -11,6 +11,7 @@ import {
 } from "@angular/core";
 import { AssetVersion } from "@application/models/asset-version";
 import { ASSET_VERSION_TYPE } from "@application/models/asset-version-type";
+import { UniqueId } from "@application/models/unique-id";
 import {
   MESSAGE_ACTION,
   MessageBus,
@@ -19,7 +20,15 @@ import {
   MESSAGE_BUS_TOKEN,
   PAGE_STATE_SERVICE_TOKEN,
 } from "@application/tokens";
-import { Subject, distinctUntilChanged, map, take, takeUntil } from "rxjs";
+import {
+  Subject,
+  debounceTime,
+  distinctUntilChanged,
+  fromEvent,
+  map,
+  take,
+  takeUntil,
+} from "rxjs";
 import { ASSET_STATE } from "../workspace/services/media-assets.service";
 import { ChangeActiveVersionUseCase } from "./usecases/change-active-version";
 
@@ -48,6 +57,7 @@ export class VideoMenuComponent implements OnInit, OnDestroy {
   private pointerState: "INITIAL" | "POINTER_DOWN" = "INITIAL";
   private lastRafTime = INITIAL_RAF_TIMER;
   private rafTimerNumber = 0;
+  private assetsMap = new Map<UniqueId, HTMLImageElement | HTMLVideoElement>();
 
   public videoPlaylist$ = inject(PAGE_STATE_SERVICE_TOKEN).state$.pipe(
     map((state) =>
@@ -67,8 +77,14 @@ export class VideoMenuComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    this.listenToAssetStateChange();
     this.setRaf();
+    this.listenToAssetStateChange();
+    this.listenToAssetInit();
+    this.listenToAssetDestroyed();
+
+    fromEvent(window, "resize")
+      .pipe(debounceTime(100), takeUntil(this.destroyed$))
+      .subscribe(() => this.onResize());
   }
 
   public trackByFunc(_: number, item: AssetVersion) {
@@ -147,6 +163,7 @@ export class VideoMenuComponent implements OnInit, OnDestroy {
   private listenToAssetStateChange() {
     this.messageBus
       .fromAction(MESSAGE_ACTION.ASSET_STATE_CHANGED)
+      .pipe(takeUntil(this.destroyed$))
       .subscribe((message) => {
         const { id, state } = message.body;
         if (state === ASSET_STATE.LOADED) {
@@ -169,10 +186,12 @@ export class VideoMenuComponent implements OnInit, OnDestroy {
     }
   }
 
-  private getVideo(id: string | number): HTMLVideoElement | null {
-    return document.getElementById(
-      `videoAsset_${id}`
-    ) as HTMLVideoElement | null;
+  private getVideo(id: string | number): HTMLVideoElement | undefined {
+    const videoFromMap = this.assetsMap.get(+id);
+    if (videoFromMap && videoFromMap instanceof HTMLVideoElement) {
+      return videoFromMap;
+    }
+    return undefined;
   }
 
   private setRaf() {
@@ -242,6 +261,37 @@ export class VideoMenuComponent implements OnInit, OnDestroy {
           });
         }
       }
+    }
+  }
+
+  private listenToAssetInit(): void {
+    this.messageBus
+      .fromAction(MESSAGE_ACTION.ASSET_INIT)
+      .pipe(takeUntil(this.destroyed$))
+      .subscribe((message) => {
+        const { id, element } = message.body;
+        this.assetsMap.set(id, element);
+      });
+  }
+
+  private listenToAssetDestroyed(): void {
+    this.messageBus
+      .fromAction(MESSAGE_ACTION.ASSET_DESTROYED)
+      .pipe(takeUntil(this.destroyed$))
+      .subscribe((message) => {
+        const { id } = message.body;
+        this.assetsMap.delete(id);
+      });
+  }
+
+  private onResize() {
+    if (this.isPlaying || !this.currentVersionId) {
+      return;
+    }
+
+    const currentVideo = this.getVideo(this.currentVersionId);
+    if (currentVideo) {
+      this.tryUpdateCursorPosition(currentVideo, this.currentVersionId);
     }
   }
 

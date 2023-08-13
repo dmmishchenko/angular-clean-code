@@ -13,4 +13,6 @@ export interface MessageEvent {
 
 export enum MESSAGE_ACTION {
   ASSET_STATE_CHANGED = "ASSET_STATE_CHANGED",
+  ASSET_INIT = "ASSET_INIT",
+  ASSET_DESTROYED = "ASSET_DESTROYED",
 }
