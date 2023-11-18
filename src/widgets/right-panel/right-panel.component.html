@@ -1,11 +1,14 @@
 <div class="messages-wrapper">
-  @if (messages$ | async; as messages) { @for (message of messages; track
-  message) {
-  <div class="message">
-    <span>Author: {{ message.author }}</span>
-    <br />
-    <span>Message: </span>
-    <i>{{ message.text }}</i>
-  </div>
-  } } @else { No data source }
+  @if (messages$ | async; as messages) {
+    @for (message of messages; track message) {
+      <div class="message">
+        <span>Author: {{ message.author }}</span>
+        <br />
+        <span>Message: </span>
+        <i>{{ message.text }}</i>
+      </div>
+    }
+  } @else {
+    No data source
+  }
 </div>

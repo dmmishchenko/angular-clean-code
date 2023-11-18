@@ -1,26 +1,26 @@
 <div class="wrapper">
-  @if (videoPlaylist$ | async; as versions) { @if (versions.length) {
-  <div class="tools">
-    <button (click)="togglePlayingState()">
-      {{ isPlaying ? "Pause" : "Play" }}
-    </button>
-  </div>
-  <div
-    class="video-menu-wrapper"
-    (pointermove)="onPointerMove($event)"
-    (pointerdown)="onPointerDown($event)"
-  >
-    @for (version of versions; track version.id) {
-
-    <div class="slider loading" [id]="version.id">
+  @if (videoPlaylist$ | async; as versions) {
+    @if (versions.length) {
+      <div class="tools">
+        <button (click)="togglePlayingState()">
+          {{ isPlaying ? "Pause" : "Play" }}
+        </button>
+      </div>
       <div
-        id="cursor_{{ version.id }}"
-        class="slider-cursor"
-        [class.visible]="version.id === currentVersionId"
-      ></div>
-    </div>
-
+        class="video-menu-wrapper"
+        (pointermove)="onPointerMove($event)"
+        (pointerdown)="onPointerDown($event)"
+      >
+        @for (version of versions; track version.id) {
+          <div class="slider loading" [id]="version.id">
+            <div
+              id="cursor_{{ version.id }}"
+              class="slider-cursor"
+              [class.visible]="version.id === currentVersionId"
+            ></div>
+          </div>
+        }
+      </div>
     }
-  </div>
-  } }
+  }
 </div>
