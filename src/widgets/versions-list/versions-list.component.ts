@@ -85,10 +85,6 @@ export class VersionsListComponent implements OnInit, OnDestroy {
     }
   }
 
-  public trackByFunc(_: number, item: AssetVersion) {
-    return item.id;
-  }
-
   ngOnDestroy(): void {
     this.destroyed$.next();
     this.destroyed$.complete();

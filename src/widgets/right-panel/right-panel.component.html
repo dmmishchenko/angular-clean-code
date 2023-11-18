@@ -1,14 +1,11 @@
 <div class="messages-wrapper">
-  <ng-container *ngIf="messages$ | async as messages; else noData">
-    <ng-container *ngFor="let message of messages">
-      <div class="message">
-        <span>Author: {{ message.author }}</span>
-        <br />
-        <span>Message: </span>
-        <i>{{ message.text }}</i>
-      </div>
-    </ng-container>
-  </ng-container>
+  @if (messages$ | async; as messages) { @for (message of messages; track
+  message) {
+  <div class="message">
+    <span>Author: {{ message.author }}</span>
+    <br />
+    <span>Message: </span>
+    <i>{{ message.text }}</i>
+  </div>
+  } } @else { No data source }
 </div>
-
-<ng-template #noData> No data source </ng-template>

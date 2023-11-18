@@ -1,4 +1,4 @@
-import "zone.js/dist/zone";
+import "zone.js";
 import { Component, enableProdMode } from "@angular/core";
 import { bootstrapApplication } from "@angular/platform-browser";
 import { provideRouter, RouterOutlet } from "@angular/router";

@@ -1,5 +1,8 @@
 <div class="header-wrapper">
   <div>{{ (activeVersionName$ | async) || "No data" }}</div>
-  <button *ngIf="!isInSync" (click)="joinSync()">Join</button>
-  <button *ngIf="isInSync" (click)="leaveSync()">Leave</button>
+  @if (isInSync) {
+  <button (click)="joinSync()">Join</button>
+  } @else {
+  <button (click)="leaveSync()">Leave</button>
+  }
 </div>
