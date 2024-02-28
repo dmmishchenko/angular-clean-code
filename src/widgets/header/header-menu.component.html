@@ -1,8 +1,8 @@
 <div class="header-wrapper">
   <div>{{ activeVersionName$() || "No data" }}</div>
   @if (isInSync) {
-    <button (click)="joinSync()">Join</button>
-  } @else {
     <button (click)="leaveSync()">Leave</button>
+  } @else {
+    <button (click)="joinSync()">Join</button>
   }
 </div>
