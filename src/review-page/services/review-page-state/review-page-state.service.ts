@@ -1,4 +1,5 @@
-import { Inject, Injectable, NgZone, inject } from "@angular/core";
+import { Inject, Injectable, WritableSignal, signal } from "@angular/core";
+import { PageState } from "@application/models/page-state";
 import {
   PageStateInterface,
   StateChanges,
@@ -9,19 +10,16 @@ import {
   ROUTE_QUERY_STATE_SERVICE_TOKEN,
   SYNC_SERVICE_TOKEN,
 } from "@application/tokens";
-import { BehaviorSubject, Observable, OperatorFunction } from "rxjs";
 import { VERSION_ID } from "src/environments/consts";
-import { PageState } from "@application/models/page-state";
 
 @Injectable()
 export class ReviewPageStateService implements PageStateInterface {
-  private state$$ = new BehaviorSubject<PageState>({
+  private state$$: WritableSignal<PageState> = signal({
     activeVersionId: null,
     playlist: [],
   });
-  public state$: Observable<PageState> = this.state$$
-    .asObservable()
-    .pipe(runInZone(inject(NgZone)));
+
+  public state$ = this.state$$.asReadonly();
 
   constructor(
     @Inject(SYNC_SERVICE_TOKEN)
@@ -52,9 +50,9 @@ export class ReviewPageStateService implements PageStateInterface {
   }
 
   private assignChanges(changes: StateChanges): void {
-    const currentState = this.state$$.getValue();
-    const newState = Object.assign(currentState, changes);
-    this.state$$.next(newState);
+    this.state$$.update((currentValue) => {
+      return { ...currentValue, ...changes };
+    });
 
     if (changes.activeVersionId !== undefined) {
       this.routeQueryStateService.changeState({
@@ -62,19 +60,4 @@ export class ReviewPageStateService implements PageStateInterface {
       });
     }
   }
-}
-
-/**
- * Custom OperatorFunction that makes sure that all lifecycle hooks of an Observable
- * are run in the NgZone.
- */
-function runInZone<T>(zone: NgZone): OperatorFunction<T, T> {
-  return (source) => {
-    return new Observable((observer) => {
-      const onNext = (value: T) => zone.run(() => observer.next(value));
-      const onError = (e: any) => zone.run(() => observer.error(e));
-      const onComplete = () => zone.run(() => observer.complete());
-      return source.subscribe(onNext, onError, onComplete);
-    });
-  };
 }

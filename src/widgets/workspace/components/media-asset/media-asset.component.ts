@@ -5,16 +5,16 @@ import {
   Input,
   OnDestroy,
   ViewChild,
+  computed,
   inject,
 } from "@angular/core";
+import { AssetVersion } from "@application/models/asset-version";
+import { ASSET_VERSION_TYPE } from "@application/models/asset-version-type";
 import { PAGE_STATE_SERVICE_TOKEN } from "@application/tokens";
-import { map } from "rxjs";
 import {
   ASSET_STATE,
   MediaAssetsService,
 } from "../../services/media-assets.service";
-import { AssetVersion } from "@application/models/asset-version";
-import { ASSET_VERSION_TYPE } from "@application/models/asset-version-type";
 
 const DELAY_TIME_MS = 500;
 @Component({
@@ -28,14 +28,15 @@ export class MediaAssetComponent implements AfterViewInit, OnDestroy {
     HTMLImageElement | HTMLVideoElement
   > | null = null;
 
-  public isActive$ = inject(PAGE_STATE_SERVICE_TOKEN).state$.pipe(
-    map((state) => {
-      if (state.activeVersionId) {
-        return this.version?.id === state.activeVersionId;
-      }
-      return false;
-    })
-  );
+  public pageState = inject(PAGE_STATE_SERVICE_TOKEN);
+  public isActive$ = computed(() => {
+    const state = this.pageState.state$();
+    if (state.activeVersionId) {
+      return this.version?.id === state.activeVersionId;
+    }
+    return false;
+  });
+
   public readonly versionTypes = ASSET_VERSION_TYPE;
 
   constructor(private mediaAssetsService: MediaAssetsService) {}

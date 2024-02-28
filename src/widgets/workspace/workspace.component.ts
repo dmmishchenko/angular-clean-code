@@ -1,6 +1,5 @@
-import { Component, inject } from "@angular/core";
+import { Component, computed, inject } from "@angular/core";
 import { PAGE_STATE_SERVICE_TOKEN } from "@application/tokens";
-import { map } from "rxjs";
 
 @Component({
   selector: "workspace",
@@ -8,7 +7,8 @@ import { map } from "rxjs";
   styleUrls: ["./workspace.component.scss"],
 })
 export class WorkspaceComponent {
-  public playlist$ = inject(PAGE_STATE_SERVICE_TOKEN).state$.pipe(
-    map((state) => state.playlist)
-  );
+  public pageState = inject(PAGE_STATE_SERVICE_TOKEN)
+  public playlist$ = computed(()=>{
+    return this.pageState.state$().playlist
+  })
 }

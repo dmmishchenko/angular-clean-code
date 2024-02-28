@@ -14,22 +14,21 @@ export class RemoveItemFromPlaylistUseCase implements Usecase {
     private reviewPageState: PageStateInterface
   ) {}
   execute(removedId: number): void {
-    this.reviewPageState.state$.pipe(take(1)).subscribe((currentState) => {
-      const newPlaylist = currentState.playlist.filter(
-        (version) => version.id !== removedId
-      );
+    const currentState = this.reviewPageState.state$();
+    const newPlaylist = currentState.playlist.filter(
+      (version) => version.id !== removedId
+    );
 
-      const changes: StateChanges = {
-        playlist: newPlaylist,
-      };
-      if (removedId === currentState.activeVersionId) {
-        if (changes.playlist?.length) {
-          changes.activeVersionId = changes.playlist[0].id;
-        } else {
-          changes.activeVersionId = null;
-        }
+    const changes: StateChanges = {
+      playlist: newPlaylist,
+    };
+    if (removedId === currentState.activeVersionId) {
+      if (changes.playlist?.length) {
+        changes.activeVersionId = changes.playlist[0].id;
+      } else {
+        changes.activeVersionId = null;
       }
-      this.reviewPageState.setState(changes);
-    });
+    }
+    this.reviewPageState.setState(changes);
   }
 }

@@ -1,4 +1,4 @@
-<div class="media-wrapper" [class.active]="isActive$ | async">
+<div class="media-wrapper" [class.active]="isActive$()">
   @if (version) {
     @if (version.type === versionTypes.VIDEO) {
       <video

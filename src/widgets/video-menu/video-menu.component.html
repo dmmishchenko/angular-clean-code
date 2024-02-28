@@ -1,5 +1,5 @@
 <div class="wrapper">
-  @if (videoPlaylist$ | async; as versions) {
+  @if (videoPlaylist$(); as versions) {
     @if (versions.length) {
       <div class="tools">
         <button (click)="togglePlayingState()">

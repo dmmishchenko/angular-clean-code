@@ -7,6 +7,7 @@ import {
   Input,
   OnDestroy,
   OnInit,
+  computed,
   inject,
 } from "@angular/core";
 import { AssetVersion } from "@application/models/asset-version";
@@ -58,16 +59,12 @@ export class VideoMenuComponent implements OnInit, OnDestroy {
   private lastRafTime = INITIAL_RAF_TIMER;
   private rafTimerNumber = 0;
   private assetsMap = new Map<UniqueId, HTMLImageElement | HTMLVideoElement>();
-
-  public videoPlaylist$ = inject(PAGE_STATE_SERVICE_TOKEN).state$.pipe(
-    map((state) =>
-      state.playlist.filter((item) => item.type === ASSET_VERSION_TYPE.VIDEO)
-    ),
-    distinctUntilChanged((prev, curr) => {
-      return JSON.stringify(prev) === JSON.stringify(curr);
-    }),
-    takeUntil(this.destroyed$)
-  );
+  private pageState = inject(PAGE_STATE_SERVICE_TOKEN);
+  public videoPlaylist$ = computed(() => {
+    return this.pageState
+      .state$()
+      .playlist.filter((item) => item.type === ASSET_VERSION_TYPE.VIDEO);
+  });
   public isPlaying = false;
 
   constructor(
@@ -211,12 +208,9 @@ export class VideoMenuComponent implements OnInit, OnDestroy {
           currentVideo &&
           currentVideo.duration - currentVideo.currentTime <= 0.01;
 
-        if (closeToEnd) {
-          this.videoPlaylist$.pipe(take(1)).subscribe((versions) => {
-            if (versions.length > 1) {
-              this.trySetNextVideo(versions, this.currentVersionId!);
-            }
-          });
+        const versions = this.videoPlaylist$();
+        if (closeToEnd && versions.length > 1) {
+          this.trySetNextVideo(versions, this.currentVersionId!);
         }
       }
       window.requestAnimationFrame(() => this.setRaf());

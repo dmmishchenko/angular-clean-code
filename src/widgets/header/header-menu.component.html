@@ -1,5 +1,5 @@
 <div class="header-wrapper">
-  <div>{{ (activeVersionName$ | async) || "No data" }}</div>
+  <div>{{ activeVersionName$() || "No data" }}</div>
   @if (isInSync) {
     <button (click)="joinSync()">Join</button>
   } @else {

@@ -1,20 +1,27 @@
 import { CommonModule } from "@angular/common";
-import { Component, Inject, Input, OnDestroy, OnInit } from "@angular/core";
+import {
+  Component,
+  Inject,
+  Input,
+  OnDestroy,
+  OnInit,
+  computed,
+  inject,
+} from "@angular/core";
 import { FormsModule } from "@angular/forms";
-import { PageStateInterface } from "@application/services/page-state.interface";
+import { AssetVersion } from "@application/models/asset-version";
+import { ASSET_VERSION_TYPE } from "@application/models/asset-version-type";
+import { UniqueId } from "@application/models/unique-id";
 import { RouteQueryStateInterface } from "@application/services/route-query-state.service";
 import {
   PAGE_STATE_SERVICE_TOKEN,
-  ROUTE_QUERY_STATE_SERVICE_TOKEN
+  ROUTE_QUERY_STATE_SERVICE_TOKEN,
 } from "@application/tokens";
-import { EMPTY, Observable, Subject, take, takeUntil, tap } from "rxjs";
-import { UniqueId } from "@application/models/unique-id";
-import { AssetVersion } from "@application/models/asset-version";
+import { EMPTY, Observable, Subject, take, tap } from "rxjs";
 import { AddItemToPlaylistUseCase } from "./usecases/add-item-to-playlist";
 import { ChangeVersionUseCase } from "./usecases/change-version";
 import { GetVersionsListUseCase } from "./usecases/get-versions-list";
 import { RemoveItemFromPlaylistUseCase } from "./usecases/remove-item-from-playlist";
-import { ASSET_VERSION_TYPE } from "@application/models/asset-version-type";
 
 @Component({
   selector: "versions-list",
@@ -27,13 +34,13 @@ export class VersionsListComponent implements OnInit, OnDestroy {
   @Input() currentVersionId: number | null = null;
   public readonly versionTypes = ASSET_VERSION_TYPE;
   public versions$: Observable<never> | Observable<AssetVersion[]> = EMPTY;
-
-  private playlist: AssetVersion[] = [];
+  public pageState = inject(PAGE_STATE_SERVICE_TOKEN);
+  public playlist$ = computed(() => {
+    return this.pageState.state$().playlist;
+  });
   private destroyed$ = new Subject<void>();
 
   constructor(
-    @Inject(PAGE_STATE_SERVICE_TOKEN)
-    private reviewPageStateService: PageStateInterface,
     @Inject(ROUTE_QUERY_STATE_SERVICE_TOKEN)
     private routeQueryStateService: RouteQueryStateInterface,
     private addItemToPlaylist: AddItemToPlaylistUseCase,
@@ -58,12 +65,6 @@ export class VersionsListComponent implements OnInit, OnDestroy {
           this.versions$ = this.getVersionsListUseCase.execute();
         }
       });
-
-    this.reviewPageStateService.state$
-      .pipe(takeUntil(this.destroyed$))
-      .subscribe((state) => {
-        this.playlist = state.playlist;
-      });
   }
 
   public changeVersion(id: UniqueId): void {
@@ -71,9 +72,9 @@ export class VersionsListComponent implements OnInit, OnDestroy {
   }
 
   public isInPlaylist(versionId: number): boolean {
+    const playlist = this.pageState.state$().playlist;
     return (
-      this.playlist.length > 1 &&
-      this.playlist.some((item) => item.id === versionId)
+      playlist.length > 1 && playlist.some((item) => item.id === versionId)
     );
   }
 

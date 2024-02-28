@@ -1,7 +1,7 @@
 <div class="workspace-wrapper">
-  @if (playlist$ | async; as playlist) {
+  @if (playlist$(); as playlist) {
     @if (playlist.length) {
-      @for (version of playlist$ | async; track version.id) {
+      @for (version of playlist; track version.id) {
         <media-asset [version]="version"></media-asset>
       }
     } @else {

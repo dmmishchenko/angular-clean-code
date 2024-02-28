@@ -1,9 +1,7 @@
 import { CommonModule } from "@angular/common";
-import { Component, OnDestroy, inject } from "@angular/core";
-import {
-  PAGE_STATE_SERVICE_TOKEN
-} from "@application/tokens";
-import { map } from "rxjs";
+import { Component, OnDestroy, Signal, computed, inject } from "@angular/core";
+import { PageState } from "@application/models/page-state";
+import { PAGE_STATE_SERVICE_TOKEN } from "@application/tokens";
 import { JoinSessionUseCase } from "src/widgets/header/usecases/join-session";
 import { LeaveSessionUseCase } from "./usecases/leave-session";
 
@@ -15,21 +13,19 @@ import { LeaveSessionUseCase } from "./usecases/leave-session";
   imports: [CommonModule],
 })
 export class HeaderMenuComponent implements OnDestroy {
-  public readonly activeVersionName$ = inject(
-    PAGE_STATE_SERVICE_TOKEN
-  ).state$.pipe(
-    map((state) => {
-      if (state.activeVersionId) {
-        const activeItem = state.playlist.find(
-          (item) => item.id === state.activeVersionId
-        );
-        if (activeItem) {
-          return activeItem.name;
-        }
+  state$: Signal<PageState> = inject(PAGE_STATE_SERVICE_TOKEN).state$;
+
+  public readonly activeVersionName$: Signal<string | null> = computed(() => {
+    const { activeVersionId, playlist } = this.state$();
+    if (activeVersionId) {
+      const activeItem = playlist.find((item) => item.id === activeVersionId);
+      if (activeItem) {
+        return activeItem.name;
       }
-      return null;
-    })
-  );
+    }
+    return null;
+  });
+
   public isInSync: boolean = false;
 
   constructor(
