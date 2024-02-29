@@ -1,5 +1,5 @@
 <div class="workspace-wrapper">
-  @if (playlist$(); as playlist) {
+  @if (pageState.state$().playlist; as playlist) {
     @if (playlist.length) {
       @for (version of playlist; track version.id) {
         <media-asset [version]="version"></media-asset>

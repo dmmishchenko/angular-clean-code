@@ -35,9 +35,6 @@ export class VersionsListComponent implements OnInit, OnDestroy {
   public readonly versionTypes = ASSET_VERSION_TYPE;
   public versions$: Observable<never> | Observable<AssetVersion[]> = EMPTY;
   public pageState = inject(PAGE_STATE_SERVICE_TOKEN);
-  public playlist$ = computed(() => {
-    return this.pageState.state$().playlist;
-  });
   private destroyed$ = new Subject<void>();
 
   constructor(

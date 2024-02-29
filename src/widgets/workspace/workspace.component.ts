@@ -8,7 +8,4 @@ import { PAGE_STATE_SERVICE_TOKEN } from "@application/tokens";
 })
 export class WorkspaceComponent {
   public pageState = inject(PAGE_STATE_SERVICE_TOKEN)
-  public playlist$ = computed(()=>{
-    return this.pageState.state$().playlist
-  })
 }
