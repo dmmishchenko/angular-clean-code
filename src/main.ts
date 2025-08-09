@@ -1,5 +1,5 @@
 import "zone.js";
-import { Component, enableProdMode } from "@angular/core";
+import { Component, enableProdMode, provideZonelessChangeDetection } from "@angular/core";
 import { bootstrapApplication } from "@angular/platform-browser";
 import { provideRouter, RouterOutlet } from "@angular/router";
 import { routes } from "./routes";
@@ -17,5 +17,7 @@ if (environment.production) {
 }
 
 bootstrapApplication(App, {
-  providers: [provideRouter(routes)],
+  providers: [
+    provideZonelessChangeDetection(),
+    provideRouter(routes)],
 });
