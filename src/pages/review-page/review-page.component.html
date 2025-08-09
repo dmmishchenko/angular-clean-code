@@ -1,0 +1,19 @@
+<header-menu
+  [playlist]="playlist()"
+  [activeVersionId]="currentVersionId()"
+></header-menu>
+<div class="main-wrapper">
+  <versions-list
+    [currentVersionId]="currentVersionId()"
+    [playlist]="playlist()"
+  ></versions-list>
+  <workspace
+    [currentVersionId]="currentVersionId()"
+    [playlist]="playlist()"
+  ></workspace>
+  <right-panel [currentVersionId]="currentVersionId()"></right-panel>
+</div>
+<video-menu
+  [currentVersionId]="currentVersionId()"
+  [playlist]="playlist()"
+></video-menu>

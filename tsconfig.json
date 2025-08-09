@@ -23,17 +23,7 @@
       "ES2022",
       "dom"
     ],
-    "paths": {
-      "@usecases/*": [
-        "./src/application/usecases/*"
-      ],
-      "@models/*": [
-        "src/review-page/models/*"
-      ],
-      "@application/*": [
-        "./src/application/*"
-      ]
-    }
+    "paths": {}
   },
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false,

@@ -6,9 +6,9 @@ export const routes: Route[] = [
     children: [
       {
         path: "review",
-        loadChildren: () =>
-          import("./review-page/review-page.module").then(
-            (m) => m.ReviewPageModule
+        loadComponent: () =>
+          import("./pages/review-page/review-page.component").then(
+            (m) => m.ReviewPage
           ),
       },
       {
