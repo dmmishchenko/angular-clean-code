@@ -1,0 +1,14 @@
+<div class="media-wrapper" [class.active]="isActive()">
+  @if (version().type === versionTypes.VIDEO) {
+    <video
+      #asset
+      preload="auto"
+      (loadeddata)="onAssetLoad()"
+      src="{{ version().url }}"
+      id="videoAsset_{{ version().id }}"
+    ></video>
+  }
+  @if (version().type === versionTypes.IMAGE) {
+    <img #asset src="{{ version().url }}" />
+  }
+</div>

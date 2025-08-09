@@ -1,0 +1,10 @@
+<div class="workspace-wrapper">
+  @for (version of playlist(); track version.id) {
+    <media-asset
+      [version]="version"
+      [currentVersionId]="currentVersionId()"
+    ></media-asset>
+  } @empty {
+    No items
+  }
+</div>

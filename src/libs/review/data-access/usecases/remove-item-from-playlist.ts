@@ -1,0 +1,35 @@
+import { Injectable, inject } from "@angular/core";
+import { Usecase } from "@shared/util/interfaces/use-case";
+import { take } from "rxjs";
+import { PAGE_STATE_SERVICE_TOKEN } from "../tokens";
+import {
+  PageStateInterface,
+  StateChanges,
+} from "@review/util/interfaces/page-state.interface";
+
+@Injectable({ providedIn: "root" })
+export class RemoveItemFromPlaylistUseCase implements Usecase {
+  private reviewPageState = inject<PageStateInterface>(
+    PAGE_STATE_SERVICE_TOKEN
+  );
+
+  execute(removedId: number): void {
+    this.reviewPageState.state$.pipe(take(1)).subscribe((currentState) => {
+      const newPlaylist = currentState.playlist.filter(
+        (version) => version.id !== removedId
+      );
+
+      const changes: StateChanges = {
+        playlist: newPlaylist,
+      };
+      if (removedId === currentState.activeVersionId) {
+        if (changes.playlist?.length) {
+          changes.activeVersionId = changes.playlist[0].id;
+        } else {
+          changes.activeVersionId = null;
+        }
+      }
+      this.reviewPageState.setState(changes);
+    });
+  }
+}
