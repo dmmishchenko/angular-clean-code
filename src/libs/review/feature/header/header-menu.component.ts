@@ -6,10 +6,10 @@ import {
   input,
   signal,
 } from "@angular/core";
-import { UniqueId } from "src/libs/shared/util/models/unique-id";
-import { AssetVersion } from "../../util/models/asset-version";
-import { JoinSessionUseCase } from "./usecases/join-session";
-import { LeaveSessionUseCase } from "./usecases/leave-session";
+import { JoinSessionUseCase } from "@review/data-access/usecases/join-session";
+import { LeaveSessionUseCase } from "@review/data-access/usecases/leave-session";
+import { AssetVersion } from "@review/util/models/asset-version";
+import { UniqueId } from "@shared/util/models/unique-id";
 
 @Component({
   selector: "header-menu",

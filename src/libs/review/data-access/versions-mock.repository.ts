@@ -4,7 +4,7 @@ import { VersionMessage } from "src/libs/review/util/models/version-message";
 import { ItemNotFoundError } from "../../shared/util/errors/item-not-found";
 import { ASSET_VERSION_TYPE } from "src/libs/review/util/models/asset-version-type";
 import { AssetVersion } from "src/libs/review/util/models/asset-version";
-import { VersionsRepository } from "../util/interfaces/versions-repository";
+import { VersionsRepository } from "../util/interfaces/versions-repository.interface";
 
 const VERSIONS_TABLE = [
   {

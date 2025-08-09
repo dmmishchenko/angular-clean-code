@@ -10,26 +10,22 @@ import {
   input,
   signal,
 } from "@angular/core";
-import { toSignal } from "@angular/core/rxjs-interop";
 import {
   Subject,
   debounceTime,
-  distinctUntilChanged,
   fromEvent,
-  map,
-  takeUntil,
+  takeUntil
 } from "rxjs";
-import { AssetVersion } from "src/libs/review/util/models/asset-version";
-import { ASSET_VERSION_TYPE } from "src/libs/review/util/models/asset-version-type";
-import { PAGE_STATE_SERVICE_TOKEN } from "src/libs/review/util/tokens";
-import { MESSAGE_BUS_TOKEN } from "src/libs/shared/tokens";
-import { UniqueId } from "src/libs/shared/util/models/unique-id";
+import { AssetVersion } from "@review/util/models/asset-version";
+import { ASSET_VERSION_TYPE } from "@review/util/models/asset-version-type";
+import { MESSAGE_BUS_TOKEN } from "@shared/tokens";
+import { UniqueId } from "@shared/util/models/unique-id";
 import {
   MESSAGE_ACTION,
   MessageBus,
-} from "../../../shared/util/interfaces/message-bus.interface";
-import { ASSET_STATE } from "../workspace/services/media-assets.service";
-import { ChangeActiveVideoUseCase } from "./usecases/change-active-video";
+} from "@shared/util/interfaces/message-bus.interface";
+import { ChangeActiveVideoUseCase } from "@review/data-access/usecases/change-active-video";
+import { ASSET_STATE } from "@review/feature/workspace/services/media-assets.service";
 
 const LOADING_CLASS = "loading";
 const VIDEO_DIGITS_ROUND = 5;

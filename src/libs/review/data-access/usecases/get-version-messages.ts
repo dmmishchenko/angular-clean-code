@@ -1,7 +1,7 @@
 import { Injectable, inject } from "@angular/core";
 import { Usecase } from "src/libs/shared/util/interfaces/use-case";
-import { VersionsRepository } from "src/libs/review/util/interfaces/versions-repository";
-import { VERSIONS_REPOSITORY_TOKEN } from "src/libs/review/util/tokens";
+import { VersionsRepository } from "src/libs/review/util/interfaces/versions-repository.interface";
+import { VERSIONS_REPOSITORY_TOKEN } from "../tokens";
 import { VersionMessage } from "src/libs/review/util/models/version-message";
 import { Observable } from "rxjs";
 

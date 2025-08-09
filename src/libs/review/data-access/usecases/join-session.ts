@@ -1,8 +1,8 @@
 import { Injectable, inject } from "@angular/core";
 import { Usecase } from "src/libs/shared/util/interfaces/use-case";
-import { PageStateInterface } from "../../../util/interfaces/page-state.interface";
-import { SyncServiceInterface } from "../../../util/interfaces/sync-service.interface";
-import { PAGE_STATE_SERVICE_TOKEN, SYNC_SERVICE_TOKEN } from "src/libs/review/util/tokens";
+import { PageStateInterface } from "../../util/interfaces/page-state.interface";
+import { SyncServiceInterface } from "../../util/interfaces/sync-service.interface";
+import { PAGE_STATE_SERVICE_TOKEN, SYNC_SERVICE_TOKEN } from "../tokens";
 
 @Injectable({ providedIn: 'root' })
 export class JoinSessionUseCase implements Usecase {

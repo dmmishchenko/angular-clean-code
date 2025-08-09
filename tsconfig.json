@@ -23,7 +23,14 @@
       "ES2022",
       "dom"
     ],
-    "paths": {}
+    "paths": {
+      "@review/*": [
+        "src/libs/review/*"
+      ],
+      "@shared/*": [
+        "src/libs/shared/*"
+      ]
+    }
   },
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false,

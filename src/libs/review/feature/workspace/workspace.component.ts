@@ -1,7 +1,7 @@
 import { Component, input } from "@angular/core";
-import { UniqueId } from "src/libs/shared/util/models/unique-id";
-import { MediaAssetComponent } from "../../ui/media-asset/media-asset.component";
-import { AssetVersion } from "../../util/models/asset-version";
+import { UniqueId } from "@shared/util/models/unique-id";
+import { MediaAssetComponent } from "@review/ui/workspace/media-asset/media-asset.component";
+import { AssetVersion } from "@review/util/models/asset-version";
 
 @Component({
   selector: "workspace",

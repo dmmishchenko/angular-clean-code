@@ -3,9 +3,9 @@ import { Usecase } from "src/libs/shared/util/interfaces/use-case";
 import {
   PageStateInterface,
   StateChanges,
-} from "../../../util/interfaces/page-state.interface";
-import { PAGE_STATE_SERVICE_TOKEN } from "src/libs/review/util/tokens";
+} from "../../util/interfaces/page-state.interface";
 import { take } from "rxjs";
+import { PAGE_STATE_SERVICE_TOKEN } from "../tokens";
 
 @Injectable({ providedIn: 'root' })
 export class RemoveItemFromPlaylistUseCase implements Usecase {

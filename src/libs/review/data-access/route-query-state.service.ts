@@ -3,7 +3,7 @@ import { ActivatedRoute, Router } from "@angular/router";
 import {
   QueryStateChanges,
   RouteQueryStateInterface,
-} from "../util/interfaces/route-query-state.service";
+} from "../util/interfaces/route-query-state.interface";
 import { Observable, map } from "rxjs";
 import { ReviewQueryStateDecorator } from "./review-query-state.decorator";
 import { VERSION_ID } from "src/environments/consts";

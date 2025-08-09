@@ -1,8 +1,8 @@
 import { AsyncPipe } from "@angular/common";
-import { Component, computed, effect, inject, input } from "@angular/core";
+import { Component, computed, inject, input } from "@angular/core";
+import { GetVersionMessagesUseCase } from "@review/data-access/usecases/get-version-messages";
+import { VersionMessage } from "@review/util/models/version-message";
 import { Observable } from "rxjs";
-import { VersionMessage } from "src/libs/review/util/models/version-message";
-import { GetVersionMessagesUseCase } from "./usecases/get-version-messages";
 
 @Component({
   selector: "right-panel",

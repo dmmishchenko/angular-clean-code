@@ -1,16 +1,16 @@
 import { Component, computed, inject, OnInit } from "@angular/core";
 import { toSignal } from "@angular/core/rxjs-interop";
-import { map, take } from "rxjs";
-import { SetActiveVersionUseCase } from "src/libs/review/data-access/usecases/set-active-version.usecase";
-import { HeaderMenuComponent } from "src/libs/review/feature/header/header-menu.component";
-import { RightPanelComponent } from "src/libs/review/feature/right-panel/right-panel.component";
-import { VersionsListComponent } from "src/libs/review/feature/versions-list/versions-list.component";
-import { VideoMenuComponent } from "src/libs/review/feature/video-menu/video-menu.component";
-import { WorkspaceComponent } from "src/libs/review/feature/workspace/workspace.component";
 import {
   PAGE_STATE_SERVICE_TOKEN,
   ROUTE_QUERY_STATE_SERVICE_TOKEN,
-} from "src/libs/review/util/tokens";
+} from "@review/data-access/tokens";
+import { SetActiveVersionUseCase } from "@review/data-access/usecases/set-active-version.usecase";
+import { HeaderMenuComponent } from "@review/feature/header/header-menu.component";
+import { RightPanelComponent } from "@review/feature/right-panel/right-panel.component";
+import { VersionsListComponent } from "@review/feature/versions-list/versions-list.component";
+import { VideoMenuComponent } from "@review/feature/video-menu/video-menu.component";
+import { WorkspaceComponent } from "@review/feature/workspace/workspace.component";
+import { map, take } from "rxjs";
 
 @Component({
   selector: "review-page",

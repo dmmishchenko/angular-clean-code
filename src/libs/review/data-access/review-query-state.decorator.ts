@@ -1,5 +1,5 @@
 import { ParamMap } from "@angular/router";
-import { QueryState } from "../util/interfaces/route-query-state.service";
+import { QueryState } from "../util/interfaces/route-query-state.interface";
 
 export class ReviewQueryStateDecorator {
   private paramMap: ParamMap;

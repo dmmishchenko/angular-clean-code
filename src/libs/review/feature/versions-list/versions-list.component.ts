@@ -1,13 +1,13 @@
 import { Component, computed, inject, input } from "@angular/core";
 import { toSignal } from "@angular/core/rxjs-interop";
 import { FormsModule } from "@angular/forms";
-import { AssetVersion } from "src/libs/review/util/models/asset-version";
-import { ASSET_VERSION_TYPE } from "src/libs/review/util/models/asset-version-type";
-import { UniqueId } from "src/libs/shared/util/models/unique-id";
-import { SetActiveVersionUseCase } from "../../data-access/usecases/set-active-version.usecase";
-import { AddItemToPlaylistUseCase } from "./usecases/add-item-to-playlist";
-import { GetVersionsListUseCase } from "./usecases/get-versions-list";
-import { RemoveItemFromPlaylistUseCase } from "./usecases/remove-item-from-playlist";
+import { AddItemToPlaylistUseCase } from "@review/data-access/usecases/add-item-to-playlist";
+import { GetVersionsListUseCase } from "@review/data-access/usecases/get-versions-list";
+import { RemoveItemFromPlaylistUseCase } from "@review/data-access/usecases/remove-item-from-playlist";
+import { SetActiveVersionUseCase } from "@review/data-access/usecases/set-active-version.usecase";
+import { AssetVersion } from "@review/util/models/asset-version";
+import { ASSET_VERSION_TYPE } from "@review/util/models/asset-version-type";
+import { UniqueId } from "@shared/util/models/unique-id";
 
 @Component({
   selector: "versions-list",

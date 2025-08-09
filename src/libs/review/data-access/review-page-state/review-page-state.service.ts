@@ -3,15 +3,12 @@ import {
   PageStateInterface,
   StateChanges,
 } from "../../util/interfaces/page-state.interface";
-import { RouteQueryStateInterface } from "../../util/interfaces/route-query-state.service";
+import { RouteQueryStateInterface } from "../../util/interfaces/route-query-state.interface";
 import { SyncServiceInterface } from "../../util/interfaces/sync-service.interface";
-import {
-  ROUTE_QUERY_STATE_SERVICE_TOKEN,
-  SYNC_SERVICE_TOKEN,
-} from "src/libs/review/util/tokens";
 import { BehaviorSubject, Observable, OperatorFunction } from "rxjs";
 import { VERSION_ID } from "src/environments/consts";
 import { PageState } from "src/libs/review/util/models/page-state";
+import { SYNC_SERVICE_TOKEN, ROUTE_QUERY_STATE_SERVICE_TOKEN } from "../tokens";
 
 @Injectable()
 export class ReviewPageStateService implements PageStateInterface {
@@ -23,7 +20,9 @@ export class ReviewPageStateService implements PageStateInterface {
     .asObservable()
     .pipe(runInZone(inject(NgZone)));
   private syncService: SyncServiceInterface = inject(SYNC_SERVICE_TOKEN);
-  private routeQueryStateService: RouteQueryStateInterface = inject(ROUTE_QUERY_STATE_SERVICE_TOKEN);
+  private routeQueryStateService: RouteQueryStateInterface = inject(
+    ROUTE_QUERY_STATE_SERVICE_TOKEN
+  );
 
   public setState(changes: StateChanges): void {
     this.validateChanges(changes);
