@@ -1,7 +1,7 @@
 import { Injectable, inject } from "@angular/core";
-import { Usecase } from "src/libs/shared/util/interfaces/use-case";
-import { PageStateInterface } from "../../util/interfaces/page-state.interface";
+import { Usecase } from "@shared/util/interfaces/use-case";
 import { PAGE_STATE_SERVICE_TOKEN } from "../tokens";
+import { PageStateInterface } from "@review/util/interfaces/page-state.interface";
 
 @Injectable({ providedIn: 'root' })
 export class ChangeActiveVideoUseCase implements Usecase {

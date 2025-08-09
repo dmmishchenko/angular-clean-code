@@ -1,15 +1,17 @@
 import { Injectable, inject } from "@angular/core";
-import { Usecase } from "src/libs/shared/util/interfaces/use-case";
+import { Usecase } from "@shared/util/interfaces/use-case";
+import { take } from "rxjs";
+import { PAGE_STATE_SERVICE_TOKEN } from "../tokens";
 import {
   PageStateInterface,
   StateChanges,
-} from "../../util/interfaces/page-state.interface";
-import { take } from "rxjs";
-import { PAGE_STATE_SERVICE_TOKEN } from "../tokens";
+} from "@review/util/interfaces/page-state.interface";
 
-@Injectable({ providedIn: 'root' })
+@Injectable({ providedIn: "root" })
 export class RemoveItemFromPlaylistUseCase implements Usecase {
-  private reviewPageState = inject<PageStateInterface>(PAGE_STATE_SERVICE_TOKEN);
+  private reviewPageState = inject<PageStateInterface>(
+    PAGE_STATE_SERVICE_TOKEN
+  );
 
   execute(removedId: number): void {
     this.reviewPageState.state$.pipe(take(1)).subscribe((currentState) => {

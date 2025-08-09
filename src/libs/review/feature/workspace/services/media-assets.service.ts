@@ -1,6 +1,6 @@
 import { Injectable, inject } from "@angular/core";
-import { UniqueId } from "src/libs/shared/util/models/unique-id";
-import { MESSAGE_BUS_TOKEN } from "src/libs/shared/tokens";
+import { UniqueId } from "@shared/util/models/unique-id";
+import { MESSAGE_BUS_TOKEN } from "@shared/tokens";
 import {
   MessageBus,
   MESSAGE_ACTION,
