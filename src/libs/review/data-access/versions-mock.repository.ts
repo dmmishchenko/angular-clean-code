@@ -1,10 +1,10 @@
 import { Injectable } from "@angular/core";
+import { VersionsRepository } from "@review/util/interfaces/versions-repository.interface";
+import { AssetVersion } from "@review/util/models/asset-version";
+import { ASSET_VERSION_TYPE } from "@review/util/models/asset-version-type";
+import { VersionMessage } from "@review/util/models/version-message";
+import { ItemNotFoundError } from "@shared/util/errors/item-not-found";
 import { Observable, delay, of, throwError } from "rxjs";
-import { VersionMessage } from "src/libs/review/util/models/version-message";
-import { ItemNotFoundError } from "../../shared/util/errors/item-not-found";
-import { ASSET_VERSION_TYPE } from "src/libs/review/util/models/asset-version-type";
-import { AssetVersion } from "src/libs/review/util/models/asset-version";
-import { VersionsRepository } from "../util/interfaces/versions-repository.interface";
 
 const VERSIONS_TABLE = [
   {

@@ -1,15 +1,14 @@
 import { Injectable, inject } from "@angular/core";
-import { Usecase } from "src/libs/shared/util/interfaces/use-case";
-import { VersionsRepository } from "src/libs/review/util/interfaces/versions-repository.interface";
-
+import { PageStateInterface } from "@review/util/interfaces/page-state.interface";
+import { RouteQueryStateInterface } from "@review/util/interfaces/route-query-state.interface";
+import { VersionsRepository } from "@review/util/interfaces/versions-repository.interface";
+import { ItemNotFoundError } from "@shared/util/errors/item-not-found";
+import { Usecase } from "@shared/util/interfaces/use-case";
 import { VERSION_ID } from "src/environments/consts";
-import { ItemNotFoundError } from "src/libs/shared/util/errors/item-not-found";
-import { PageStateInterface } from "../../util/interfaces/page-state.interface";
-import { RouteQueryStateInterface } from "../../util/interfaces/route-query-state.interface";
 import {
   PAGE_STATE_SERVICE_TOKEN,
-  ROUTE_QUERY_STATE_SERVICE_TOKEN,
   VERSIONS_REPOSITORY_TOKEN,
+  ROUTE_QUERY_STATE_SERVICE_TOKEN,
 } from "../tokens";
 
 @Injectable({ providedIn: "root" })

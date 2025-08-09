@@ -8,14 +8,13 @@ import {
   input,
   viewChild,
 } from "@angular/core";
-
-import { AssetVersion } from "src/libs/review/util/models/asset-version";
-import { ASSET_VERSION_TYPE } from "src/libs/review/util/models/asset-version-type";
-import { UniqueId } from "src/libs/shared/util/models/unique-id";
 import {
-  ASSET_STATE,
   MediaAssetsService,
-} from "../../../feature/workspace/services/media-assets.service";
+  ASSET_STATE,
+} from "@review/feature/workspace/services/media-assets.service";
+import { AssetVersion } from "@review/util/models/asset-version";
+import { ASSET_VERSION_TYPE } from "@review/util/models/asset-version-type";
+import { UniqueId } from "@shared/util/models/unique-id";
 
 const DELAY_TIME_MS = 500;
 @Component({

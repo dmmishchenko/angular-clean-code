@@ -1,4 +1,4 @@
-import { AssetVersion } from "src/libs/review/util/models/asset-version";
+import { AssetVersion } from "./asset-version";
 
 export interface PageState {
   activeVersionId: number | null;

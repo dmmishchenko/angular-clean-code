@@ -1,20 +1,20 @@
 import {
-  AfterViewInit,
   Component,
-  ElementRef,
+  AfterViewInit,
   OnDestroy,
-  computed,
   inject,
   input,
   viewChild,
+  ElementRef,
+  computed,
 } from "@angular/core";
 import {
   MediaAssetsService,
   ASSET_STATE,
 } from "@review/feature/workspace/services/media-assets.service";
-import { AssetVersion } from "src/libs/review/util/models/asset-version";
-import { ASSET_VERSION_TYPE } from "src/libs/review/util/models/asset-version-type";
-import { UniqueId } from "src/libs/shared/util/models/unique-id";
+import { AssetVersion } from "@review/util/models/asset-version";
+import { ASSET_VERSION_TYPE } from "@review/util/models/asset-version-type";
+import { UniqueId } from "@shared/util/models/unique-id";
 
 const DELAY_TIME_MS = 500;
 @Component({

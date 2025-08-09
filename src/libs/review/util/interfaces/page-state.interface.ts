@@ -1,5 +1,5 @@
-import { PageState } from "src/libs/review/util/models/page-state";
 import { Observable } from "rxjs";
+import { PageState } from "../models/page-state";
 
 export type StateChanges = {
   [key in keyof PageState]?: PageState[key];

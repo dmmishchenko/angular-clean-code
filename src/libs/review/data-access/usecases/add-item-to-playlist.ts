@@ -1,15 +1,15 @@
 import { Injectable, inject } from "@angular/core";
-import { Usecase } from "src/libs/shared/util/interfaces/use-case";
-import { VersionsRepository } from "src/libs/review/util/interfaces/versions-repository.interface";
 import {
   PageStateInterface,
   StateChanges,
-} from "../../util/interfaces/page-state.interface";
+} from "@review/util/interfaces/page-state.interface";
+import { VersionsRepository } from "@review/util/interfaces/versions-repository.interface";
+import { AssetVersion } from "@review/util/models/asset-version";
+import { ASSET_VERSION_TYPE } from "@review/util/models/asset-version-type";
+import { PageState } from "@review/util/models/page-state";
+import { Usecase } from "@shared/util/interfaces/use-case";
+import { withLatestFrom, take } from "rxjs";
 import { PAGE_STATE_SERVICE_TOKEN, VERSIONS_REPOSITORY_TOKEN } from "../tokens";
-import { take, withLatestFrom } from "rxjs";
-import { PageState } from "src/libs/review/util/models/page-state";
-import { AssetVersion } from "src/libs/review/util/models/asset-version";
-import { ASSET_VERSION_TYPE } from "src/libs/review/util/models/asset-version-type";
 
 @Injectable({ providedIn: "root" })
 export class AddItemToPlaylistUseCase implements Usecase {

@@ -1,15 +1,13 @@
 import { TestBed } from "@angular/core/testing";
 import { ReviewPageStateService } from "./review-page-state.service";
-import { SyncService } from "../../../../pages/review-page/services/sync/sync.service";
-import { RouteQueryStateService } from "../../../../pages/review-page/services/route-query-state.service";
-import {
-  ROUTE_QUERY_STATE_SERVICE_TOKEN,
-  SYNC_SERVICE_TOKEN,
-} from "src/libs/review/util/tokens";
 import { RouterTestingModule } from "@angular/router/testing";
-import { StateChanges } from "@application/services/page-state.interface";
+import { StateChanges } from "@review/util/interfaces/page-state.interface";
+import { PageState } from "@review/util/models/page-state";
 import { take } from "rxjs";
-import { PageState } from "src/libs/review/util/models/page-state";
+import { RouteQueryStateService } from "../route-query-state.service";
+import { SyncService } from "../sync/sync.service";
+import { SYNC_SERVICE_TOKEN, ROUTE_QUERY_STATE_SERVICE_TOKEN } from "../tokens";
+
 
 describe("ReviewPageStateService", () => {
   let service: ReviewPageStateService;

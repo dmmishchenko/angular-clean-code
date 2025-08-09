@@ -1,13 +1,17 @@
 import { Injectable, inject } from "@angular/core";
-import { Usecase } from "src/libs/shared/util/interfaces/use-case";
-import { AssetVersion } from "src/libs/review/util/models/asset-version";
-import { VersionsRepository } from "src/libs/review/util/interfaces/versions-repository.interface";
-import { VERSIONS_REPOSITORY_TOKEN } from "../tokens";
+import { VersionsRepository } from "@review/util/interfaces/versions-repository.interface";
+import { AssetVersion } from "@review/util/models/asset-version";
+import { Usecase } from "@shared/util/interfaces/use-case";
 import { Observable } from "rxjs";
+import { VERSIONS_REPOSITORY_TOKEN } from "../tokens";
 
-@Injectable({ providedIn: 'root' })
-export class GetVersionsListUseCase implements Usecase<Observable<AssetVersion[]>> {
-  private versionsRepository = inject<VersionsRepository>(VERSIONS_REPOSITORY_TOKEN);
+@Injectable({ providedIn: "root" })
+export class GetVersionsListUseCase
+  implements Usecase<Observable<AssetVersion[]>>
+{
+  private versionsRepository = inject<VersionsRepository>(
+    VERSIONS_REPOSITORY_TOKEN
+  );
 
   /**
    * execute versions load from repository

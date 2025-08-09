@@ -1,13 +1,13 @@
-import { Inject, Injectable, NgZone, inject } from "@angular/core";
+import { Injectable, inject, NgZone } from "@angular/core";
 import {
   PageStateInterface,
   StateChanges,
-} from "../../util/interfaces/page-state.interface";
-import { RouteQueryStateInterface } from "../../util/interfaces/route-query-state.interface";
-import { SyncServiceInterface } from "../../util/interfaces/sync-service.interface";
+} from "@review/util/interfaces/page-state.interface";
+import { RouteQueryStateInterface } from "@review/util/interfaces/route-query-state.interface";
+import { SyncServiceInterface } from "@review/util/interfaces/sync-service.interface";
+import { PageState } from "@review/util/models/page-state";
 import { BehaviorSubject, Observable, OperatorFunction } from "rxjs";
 import { VERSION_ID } from "src/environments/consts";
-import { PageState } from "src/libs/review/util/models/page-state";
 import { SYNC_SERVICE_TOKEN, ROUTE_QUERY_STATE_SERVICE_TOKEN } from "../tokens";
 
 @Injectable()
