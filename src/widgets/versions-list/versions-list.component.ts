@@ -17,11 +17,10 @@ import { RemoveItemFromPlaylistUseCase } from "./usecases/remove-item-from-playl
 import { ASSET_VERSION_TYPE } from "@application/models/asset-version-type";
 
 @Component({
-  selector: "versions-list",
-  templateUrl: "./versions-list.component.html",
-  styleUrls: ["./versions-list.component.scss"],
-  imports: [CommonModule, FormsModule],
-  standalone: true,
+    selector: "versions-list",
+    templateUrl: "./versions-list.component.html",
+    styleUrls: ["./versions-list.component.scss"],
+    imports: [CommonModule, FormsModule]
 })
 export class VersionsListComponent implements OnInit, OnDestroy {
   @Input() currentVersionId: number | null = null;

@@ -18,9 +18,10 @@ import { ASSET_VERSION_TYPE } from "@application/models/asset-version-type";
 
 const DELAY_TIME_MS = 500;
 @Component({
-  selector: "media-asset",
-  templateUrl: "./media-asset.component.html",
-  styleUrls: ["./media-asset.component.scss"],
+    selector: "media-asset",
+    templateUrl: "./media-asset.component.html",
+    styleUrls: ["./media-asset.component.scss"],
+    standalone: false
 })
 export class MediaAssetComponent implements AfterViewInit, OnDestroy {
   @Input() version: AssetVersion | null = null;

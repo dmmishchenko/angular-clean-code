@@ -8,11 +8,10 @@ import { JoinSessionUseCase } from "src/widgets/header/usecases/join-session";
 import { LeaveSessionUseCase } from "./usecases/leave-session";
 
 @Component({
-  selector: "header-menu",
-  templateUrl: "./header-menu.component.html",
-  styleUrls: ["./header-menu.component.scss"],
-  standalone: true,
-  imports: [CommonModule],
+    selector: "header-menu",
+    templateUrl: "./header-menu.component.html",
+    styleUrls: ["./header-menu.component.scss"],
+    imports: [CommonModule]
 })
 export class HeaderMenuComponent implements OnDestroy {
   public readonly activeVersionName$ = inject(

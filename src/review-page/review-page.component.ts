@@ -4,9 +4,10 @@ import { Observable } from "rxjs";
 import { PageState } from "@application/models/page-state";
 
 @Component({
-  selector: "review-page",
-  templateUrl: "./review-page.component.html",
-  styleUrls: ["./review-page.component.scss"],
+    selector: "review-page",
+    templateUrl: "./review-page.component.html",
+    styleUrls: ["./review-page.component.scss"],
+    standalone: false
 })
 export class ReviewPage {
   state$: Observable<PageState> = inject(PAGE_STATE_SERVICE_TOKEN).state$;

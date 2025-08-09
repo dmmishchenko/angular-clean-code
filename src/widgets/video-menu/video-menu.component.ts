@@ -37,10 +37,11 @@ const VIDEO_DIGITS_ROUND = 5;
 
 const INITIAL_RAF_TIMER = -Infinity;
 @Component({
-  selector: "video-menu",
-  templateUrl: "./video-menu.component.html",
-  styleUrls: ["./video-menu.component.scss"],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: "video-menu",
+    templateUrl: "./video-menu.component.html",
+    styleUrls: ["./video-menu.component.scss"],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class VideoMenuComponent implements OnInit, OnDestroy {
   private _currentVersionId: number | null = null;

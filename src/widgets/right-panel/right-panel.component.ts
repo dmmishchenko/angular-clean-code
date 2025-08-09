@@ -6,11 +6,10 @@ import { Observable } from "rxjs";
 
 
 @Component({
-  selector: "right-panel",
-  templateUrl: "./right-panel.component.html",
-  styleUrls: ["./right-panel.component.scss"],
-  standalone: true,
-  imports: [CommonModule],
+    selector: "right-panel",
+    templateUrl: "./right-panel.component.html",
+    styleUrls: ["./right-panel.component.scss"],
+    imports: [CommonModule]
 })
 export class RightPanelComponent {
   private _currentVersionId: number | null = null;

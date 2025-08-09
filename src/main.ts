@@ -6,10 +6,9 @@ import { routes } from "./routes";
 import { environment } from "./environments/environment";
 
 @Component({
-  selector: "my-app",
-  standalone: true,
-  imports: [RouterOutlet],
-  template: ` <router-outlet></router-outlet> `,
+    selector: "my-app",
+    imports: [RouterOutlet],
+    template: ` <router-outlet></router-outlet> `
 })
 export class App {}
 

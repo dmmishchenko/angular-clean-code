@@ -3,9 +3,10 @@ import { PAGE_STATE_SERVICE_TOKEN } from "@application/tokens";
 import { map } from "rxjs";
 
 @Component({
-  selector: "workspace",
-  templateUrl: "./workspace.component.html",
-  styleUrls: ["./workspace.component.scss"],
+    selector: "workspace",
+    templateUrl: "./workspace.component.html",
+    styleUrls: ["./workspace.component.scss"],
+    standalone: false
 })
 export class WorkspaceComponent {
   public playlist$ = inject(PAGE_STATE_SERVICE_TOKEN).state$.pipe(
