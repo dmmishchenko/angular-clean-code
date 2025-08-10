@@ -1,6 +1,6 @@
 <div class="messages-wrapper">
-  @if (messages$() | async; as messages) {
-    @for (message of messages; track message) {
+  @if (messages.hasValue()) {
+    @for (message of messages.value(); track message) {
       <div class="message">
         <span>Author: {{ message.author }}</span>
         <br />
@@ -8,7 +8,10 @@
         <i>{{ message.text }}</i>
       </div>
     }
+  }
+  @if (messages.status() === "loading") {
+    <div>Loading...</div>
   } @else {
-    No data source
+    <div>No data source</div>
   }
 </div>
