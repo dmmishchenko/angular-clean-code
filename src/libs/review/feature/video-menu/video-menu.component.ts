@@ -1,36 +1,34 @@
 import {
   ChangeDetectionStrategy,
   Component,
+  DOCUMENT,
   HostListener,
-  Input,
   OnDestroy,
   OnInit,
   computed,
   inject,
   input,
+  linkedSignal,
   signal,
 } from "@angular/core";
-import {
-  Subject,
-  debounceTime,
-  fromEvent,
-  takeUntil
-} from "rxjs";
+import { ChangeActiveVideoUseCase } from "@review/data-access/usecases/change-active-video";
+import { ASSET_STATE } from "@review/feature/workspace/services/media-assets.service";
 import { AssetVersion } from "@review/util/models/asset-version";
 import { ASSET_VERSION_TYPE } from "@review/util/models/asset-version-type";
 import { MESSAGE_BUS_TOKEN } from "@shared/tokens";
-import { UniqueId } from "@shared/util/models/unique-id";
 import {
   MESSAGE_ACTION,
   MessageBus,
 } from "@shared/util/interfaces/message-bus.interface";
-import { ChangeActiveVideoUseCase } from "@review/data-access/usecases/change-active-video";
-import { ASSET_STATE } from "@review/feature/workspace/services/media-assets.service";
+import { UniqueId } from "@shared/util/models/unique-id";
+import { ReplaySubject, debounceTime, fromEvent, takeUntil } from "rxjs";
 
 const LOADING_CLASS = "loading";
 const VIDEO_DIGITS_ROUND = 5;
 
 const INITIAL_RAF_TIMER = -Infinity;
+
+type PointerState = "INITIAL" | "POINTER_DOWN";
 @Component({
   selector: "video-menu",
   templateUrl: "./video-menu.component.html",
@@ -39,42 +37,45 @@ const INITIAL_RAF_TIMER = -Infinity;
   standalone: true,
 })
 export class VideoMenuComponent implements OnInit, OnDestroy {
-  private changeActiveVersionUseCase = inject(ChangeActiveVideoUseCase);
-  private messageBus = inject<MessageBus>(MESSAGE_BUS_TOKEN);
-
-  private _currentVersionId: number | null = null;
-  public get currentVersionId(): number | null {
-    return this._currentVersionId;
-  }
-  @Input()
-  public set currentVersionId(value: number | null) {
-    this._currentVersionId = value;
-    this.lastRafTime = INITIAL_RAF_TIMER;
-  }
-
-  private destroyed$ = new Subject<void>();
-  private pointerState: "INITIAL" | "POINTER_DOWN" = "INITIAL";
-  private lastRafTime = INITIAL_RAF_TIMER;
-  private rafTimerNumber = 0;
-  private assetsMap = new Map<UniqueId, HTMLImageElement | HTMLVideoElement>();
-
+  readonly currentVersionId = input.required<UniqueId | null>();
   readonly playlist = input.required<AssetVersion[]>();
 
-  public videoPlaylist = computed(() => {
+  protected readonly videoPlaylist = computed(() => {
     return this.playlist().filter(
       (item) => item.type === ASSET_VERSION_TYPE.VIDEO
     );
   });
+  private readonly cursorPosition = signal<number>(0);
 
-  public isPlaying = signal(false);
+  protected readonly isPlaying = signal(false);
+  protected readonly cursorTranslateStyle = computed(() => {
+    const roundedCursorPosition = Math.round(this.cursorPosition());
+    return `translateX${roundedCursorPosition}px`;
+  });
+
+  private readonly lastRafTime = linkedSignal({
+    source: this.currentVersionId,
+    computation: () => INITIAL_RAF_TIMER,
+  });
+  private readonly changeActiveVersionUseCase = inject(
+    ChangeActiveVideoUseCase
+  );
+  private readonly messageBus = inject<MessageBus>(MESSAGE_BUS_TOKEN);
+  private readonly destroyed$ = new ReplaySubject<void>();
+  private readonly pointerState = signal<PointerState>("INITIAL");
+  private readonly defaultView = inject(DOCUMENT).defaultView;
+  private rafTimerNumber = 0;
+  private assetsMap = new Map<UniqueId, HTMLImageElement | HTMLVideoElement>();
 
   ngOnInit(): void {
     this.setRaf();
     this.listenToAssetStateChange();
     this.listenToAssetInit();
     this.listenToAssetDestroyed();
-
-    fromEvent(window, "resize")
+    if (!this.defaultView) {
+      throw new Error("Default view is not found");
+    }
+    fromEvent(this.defaultView, "resize")
       .pipe(debounceTime(100), takeUntil(this.destroyed$))
       .subscribe(() => this.onResize());
   }
@@ -88,17 +89,18 @@ export class VideoMenuComponent implements OnInit, OnDestroy {
   }
 
   public onPointerMove(event: PointerEvent): void {
-    if (isOnSlider(event) && this.pointerState === "POINTER_DOWN") {
+    if (isOnSlider(event) && this.pointerState() === "POINTER_DOWN") {
       const { id, clientWidth } = event.target as HTMLDivElement;
 
-      if (this.currentVersionId !== +id) {
+      if (this.currentVersionId() !== +id) {
         this.changeActiveVersionUseCase.execute(+id);
       }
 
       const cursor = getCursor(id);
       const pos = Math.min(event.offsetX, clientWidth);
       if (cursor) {
-        setCursorPositionStyle(cursor, pos);
+        /** currently broken */
+        this.cursorPosition.set(pos);
       }
       this.updateVideoTime(pos, clientWidth, id);
     }
@@ -106,9 +108,9 @@ export class VideoMenuComponent implements OnInit, OnDestroy {
 
   public onPointerDown(event: PointerEvent): void {
     if (isOnSlider(event)) {
-      this.pointerState = "POINTER_DOWN";
+      this.pointerState.set("POINTER_DOWN");
       const { id, clientWidth } = event.target as HTMLDivElement;
-      if (this.currentVersionId !== +id) {
+      if (this.currentVersionId() !== +id) {
         this.changeActiveVersionUseCase.execute(+id);
       }
 
@@ -122,14 +124,15 @@ export class VideoMenuComponent implements OnInit, OnDestroy {
   }
   @HostListener("document:pointerup", ["$event"])
   public onPointerUp() {
-    this.pointerState = "INITIAL";
+    this.pointerState.set("INITIAL");
   }
 
   public togglePlayingState() {
-    if (!this.currentVersionId) {
+    const currentVersionId = this.currentVersionId();
+    if (!currentVersionId) {
       return;
     }
-    const video = this.getVideo(this.currentVersionId);
+    const video = this.getVideo(currentVersionId);
     if (!video) {
       return;
     }
@@ -185,18 +188,22 @@ export class VideoMenuComponent implements OnInit, OnDestroy {
   }
 
   private setRaf() {
-    this.rafTimerNumber = window.requestAnimationFrame(() => {
+    if (!this.defaultView) {
+      throw new Error("Default view is not found");
+    }
+    this.rafTimerNumber = this.defaultView.requestAnimationFrame(() => {
+      const currentVersionId = this.currentVersionId();
       //cursor update section
-      if (this.currentVersionId && this.pointerState !== "POINTER_DOWN") {
-        const currentVideo = this.getVideo(this.currentVersionId);
-        if (currentVideo && this.lastRafTime !== currentVideo.currentTime) {
-          this.lastRafTime = currentVideo.currentTime;
-          this.tryUpdateCursorPosition(currentVideo, this.currentVersionId);
+      if (currentVersionId && this.pointerState() !== "POINTER_DOWN") {
+        const currentVideo = this.getVideo(currentVersionId);
+        if (currentVideo && this.lastRafTime() !== currentVideo.currentTime) {
+          this.lastRafTime.set(currentVideo.currentTime);
+          this.tryUpdateCursorPosition(currentVideo, currentVersionId);
         }
       }
       //on video ended handle
-      if (this.currentVersionId) {
-        const currentVideo = this.getVideo(this.currentVersionId);
+      if (currentVersionId) {
+        const currentVideo = this.getVideo(currentVersionId);
         const closeToEnd =
           currentVideo &&
           currentVideo.duration - currentVideo.currentTime <= 0.01;
@@ -204,11 +211,11 @@ export class VideoMenuComponent implements OnInit, OnDestroy {
         if (closeToEnd) {
           const versions = this.videoPlaylist();
           if (versions.length > 1) {
-            this.trySetNextVideo(versions, this.currentVersionId!);
+            this.trySetNextVideo(versions, currentVersionId);
           }
         }
       }
-      window.requestAnimationFrame(() => this.setRaf());
+      this.defaultView?.requestAnimationFrame(() => this.setRaf());
     });
   }
 
@@ -225,7 +232,7 @@ export class VideoMenuComponent implements OnInit, OnDestroy {
           VIDEO_DIGITS_ROUND
         ) * slider.clientWidth
       );
-      setCursorPositionStyle(cursor, pos);
+      this.cursorPosition.set(pos);
     }
   }
 
@@ -274,29 +281,26 @@ export class VideoMenuComponent implements OnInit, OnDestroy {
   }
 
   private onResize() {
-    if (this.isPlaying() || !this.currentVersionId) {
+    const currentVersionId = this.currentVersionId();
+    if (this.isPlaying() || !currentVersionId) {
       return;
     }
 
-    const currentVideo = this.getVideo(this.currentVersionId);
+    const currentVideo = this.getVideo(currentVersionId);
     if (currentVideo) {
-      this.tryUpdateCursorPosition(currentVideo, this.currentVersionId);
+      this.tryUpdateCursorPosition(currentVideo, currentVersionId);
     }
   }
 
   ngOnDestroy(): void {
     this.destroyed$.next();
     this.destroyed$.complete();
-    window.cancelAnimationFrame(this.rafTimerNumber);
+    this.defaultView?.cancelAnimationFrame(this.rafTimerNumber);
   }
 }
 
 function getSlider(id: string | number) {
   return document.getElementById(id.toString());
-}
-
-function setCursorPositionStyle(cursor: HTMLElement, pos: number) {
-  cursor.style.transform = `translateX(${pos}px)`;
 }
 
 function getCursor(id: string | number) {
