@@ -16,7 +16,8 @@
             <div
               id="cursor_{{ version.id }}"
               class="slider-cursor"
-              [class.visible]="version.id === currentVersionId"
+              [class.visible]="version.id === currentVersionId()"
+              [style.transform]="cursorTranslateStyle()"
             ></div>
           </div>
         }

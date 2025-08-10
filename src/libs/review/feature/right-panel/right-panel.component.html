@@ -8,10 +8,10 @@
         <i>{{ message.text }}</i>
       </div>
     }
+  } @else {
+    <div>No data source</div>
   }
   @if (messages.status() === "loading") {
     <div>Loading...</div>
-  } @else {
-    <div>No data source</div>
   }
 </div>
